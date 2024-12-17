@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darkwood Clone</title>
+    <style>
+        /* Classic Mac OS styling */
+        body {
+            background-color: #999999;
+            font-family: "Chicago", "Helvetica Neue", sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .mac-window {
+            background-color: #ffffff;
+            border: 2px solid #000000;
+            border-radius: 5px;
+            box-shadow: 2px 2px 0px #666666;
+            overflow: hidden;
+        }
+
+        .title-bar {
+            background: linear-gradient(90deg, #000000, #666666);
+            color: white;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        .game-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: auto 1fr auto;
+            gap: 10px;
+            height: calc(100vh - 40px);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .map-window {
+            grid-column: 1;
+            min-width: 0;
+            height: 100%;
+        }
+
+        .map-content {
+            background-color: #000000;
+            height: calc(100% - 27px);
+        }
+
+        .stats-panel, .inventory-panel {
+            background-color: #dddddd;
+            padding: 10px;
+            height: calc(100% - 30px);
+        }
+
+        .stat-item {
+            border: 1px solid #999999;
+            margin: 5px 0;
+            padding: 5px;
+        }
+
+        /* Add these styles */
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .inventory-slot {
+            aspect-ratio: 1;
+            border: 2px solid #666666;
+            background-color: #ffffff;
+            padding: 4px;
+            cursor: pointer;
+            position: relative;
+            font-size: 12px;
+        }
+
+        .inventory-slot .item-name {
+            text-align: center;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+
+        .inventory-slot .item-stats {
+            font-size: 12px;
+            color: #3a3939;
+            margin-top: 5px;
+            border-top: 1px solid #cccccc;
+            padding-top: 5px;
+        }
+
+        .inventory-slot.selected {
+            border-color: #000000;
+            background-color: #cccccc;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ffffff;
+            border: 2px solid #000000;
+            box-shadow: 4px 4px 0px #666666;
+            z-index: 1000;
+            width: 300px;
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        .modal-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            padding: 10px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            border-top: 1px solid #999999;
+        }
+
+        .modal-button {
+            flex: 1;
+            padding: 8px;
+            background: #ffffff;
+            border: 2px solid #666666;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 12px;
+        }
+
+        .modal-button:hover {
+            background: #eeeeee;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Add these styles */
+        .character-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-bottom: 5px;
+        }
+
+        .character-info {
+            display: flex;
+            gap: 10px;
+        }
+
+        .character-portrait {
+            width: 48px;
+            height: 48px;
+            border: 2px solid #666666;
+            background-color: #ffffff;
+        }
+
+        .character-name {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .character-class {
+            font-size: 12px;
+            color: #666666;
+        }
+
+        .stat-group {
+            margin: 10px 0;
+            border-top: 1px solid #999999;
+            padding-top: 10px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            border: 1px solid #999999;
+            margin: 5px 0;
+            padding: 5px;
+            font-size: 12px;
+        }
+
+        .inventory-toggle {
+            width: 48px;
+            height: 48px;
+            border: 2px solid #666666;
+            background-color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .inventory-toggle:hover {
+            background-color: #eeeeee;
+        }
+
+        /* Update/add these styles */
+        .stats-panel {
+            background-color: #dddddd;
+            padding: 10px;
+            height: calc(100% - 30px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .character-header {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .character-info {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-right {
+            text-align: right;
+        }
+
+        .level-info {
+            font-size: 12px;
+            margin-top: 4px;
+            color: #666666;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .stats-column {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .stat-group {
+            margin: 0;
+            padding-top: 10px;
+            border-top: 1px solid #999999;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            border: 1px solid #999999;
+            margin: 5px 0;
+            padding: 5px;
+            font-size: 12px;
+        }
+
+        /* Add these menu bar styles */
+        .menu-bar {
+            background-color: #ffffff;
+            border: 2px solid #000000;
+            border-radius: 5px;
+            display: flex;
+            padding: 2px 5px;
+            font-size: 12px;
+            height: 25px;
+            color: #000000;
+        }
+
+        .menu-item {
+            position: relative;
+            padding: 2px 8px;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            background-color: #000000;
+            color: #ffffff;
+        }
+
+        .menu-item:hover .dropdown {
+            display: block;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #ffffff;
+            border: 2px solid #000000;
+            box-shadow: 2px 2px 0px #666666;
+            z-index: 1000;
+            min-width: 100px;
+        }
+
+        .dropdown-item {
+            padding: 4px 8px;
+            cursor: pointer;
+            color: black;
+        }
+
+        .dropdown-item:hover {
+            background-color: #000000;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- Add this menu bar before the map window -->
+        <div class="menu-bar">
+            <div class="menu-item">
+                File
+                <div class="dropdown">
+                    <div class="dropdown-item">Save</div>
+                    <div class="dropdown-item">Mute</div>
+                    <div class="dropdown-item">Quit</div>
+                </div>
+            </div>
+            <div class="menu-item">
+                Edit
+                <div class="dropdown">
+                    <div class="dropdown-item">Character</div>
+                </div>
+            </div>
+            <div class="menu-item">
+                Help
+                <div class="dropdown">
+                    <div class="dropdown-item">Credits</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Panel - Map -->
+        <div class="mac-window map-window">
+            <div class="title-bar">World Map</div>
+            <div class="map-content">
+                <!-- Map will go here -->
+            </div>
+        </div>
+
+        <!-- Bottom Panel - Combined Stats & Inventory -->
+        <div class="mac-window">
+            <div class="title-bar">Character</div>
+            <div class="stats-panel">
+                <div class="character-header">
+                    <div class="character-info">
+                        <div class="character-portrait" onclick="toggleEquipment()">
+                            <!-- Character portrait will go here -->
+                             <img style="width: 100%; height: 100%;" src="character.png" alt="">
+                        </div>
+                        <div>
+                            <div class="character-name">Marcus, Lvl 5</div>
+                            <div class="character-class">1000 Gold</div>
+                            <div class="level-info">
+                                1250 / 2000 XP
+                            </div>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <div class="inventory-toggle" onclick="toggleInventory()">
+                          <img src="bag.jpg" style="width: 100%; height: 100%;" alt="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-container">
+                    <div class="stats-column">
+                        <div class="stat-group">
+                            <div class="stat-item">
+                                <span>Health</span>
+                                <span>100 / 100</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Stamina</span>
+                                <span>85 / 100</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Hunger</span>
+                                <span>90 / 100</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-group">
+                            <div class="stat-item">
+                                <span>Strength</span>
+                                <span>14</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Agility</span>
+                                <span>12</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats-column">
+                        <div class="stat-group">
+                            <div class="stat-item">
+                                <span>Endurance</span>
+                                <span>11</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Intelligence</span>
+                                <span>8</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Sanity</span>
+                                <span>10/100</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-group">
+                            <div class="stat-item">
+                                <span>Defense</span>
+                                <span>35</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Critical Rate</span>
+                                <span>15%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add this at the bottom of body -->
+    <div class="overlay" id="inventoryOverlay"></div>
+    <div class="modal" id="equipmentModal">
+        <div class="title-bar">Equipment</div>
+        <div class="modal-grid">
+            <div class="inventory-slot">
+                <div class="item-name">Axe</div>
+                <div class="item-stats">
+                    Dmg: 15-20<br>
+                    Spd: 1.2s
+                </div>
+            </div>
+            <div class="inventory-slot">
+                <div class="item-name">Shield</div>
+                <div class="item-stats">
+                    Def: +5<br>
+                    Block: 25%
+                </div>
+            </div>
+            <div class="inventory-slot">
+                <div class="item-name">Amulet</div>
+                <div class="item-stats">
+                    HP: +10<br>
+                    Luck: +2
+                </div>
+            </div>
+            <div class="inventory-slot">
+                <div class="item-name">Ring</div>
+                <div class="item-stats">
+                    Def: +2<br>
+                    Stam: +5
+                </div>
+            </div>
+            <div class="inventory-slot"></div>
+            <div class="inventory-slot"></div>
+            <div class="inventory-slot"></div>
+            <div class="inventory-slot"></div>
+            <div class="inventory-slot"></div>
+        </div>
+        <div class="modal-actions">
+            <button class="modal-button" onclick="equipSelectedItem()">Equip</button>
+            <button class="modal-button" onclick="toggleEquipment()">Close</button>
+        </div>
+    </div>
+
+    <div class="modal" id="inventoryModal">
+        <div class="title-bar">Items</div>
+        <div class="modal-grid">
+            <div class="inventory-slot">
+                <div class="item-name">Potion (x4)</div>
+                <div class="item-stats">
+                    Heal: 50<br>
+                    Instant
+                </div>
+            </div>
+            <div class="inventory-slot">
+                <div class="item-name">Torch (x2)</div>
+                <div class="item-stats">
+                    Light: +3<br>
+                    Time: 5m
+                </div>
+            </div>
+            <div class="inventory-slot"></div>
+            <div class="inventory-slot"></div>
+            <div class="inventory-slot"></div>
+            <div class="inventory-slot"></div>
+            <div class="inventory-slot"></div>
+            <div class="inventory-slot"></div>
+            <div class="inventory-slot"></div>
+        </div>
+        <div class="modal-actions">
+            <button class="modal-button" onclick="useSelectedItem()">Use</button>
+            <button class="modal-button" onclick="toggleInventory()">Close</button>
+        </div>
+    </div>
+
+    <!-- Add this script at the bottom of body -->
+    <script>
+        function toggleInventory() {
+            document.getElementById('inventoryModal').classList.toggle('active');
+            document.getElementById('inventoryOverlay').classList.toggle('active');
+        }
+
+        function toggleEquipment() {
+            document.getElementById('equipmentModal').classList.toggle('active');
+            document.getElementById('inventoryOverlay').classList.toggle('active');
+        }
+
+        function equipSelectedItem() {
+            console.log("Equip selected item");
+        }
+
+        function useSelectedItem() {
+            console.log("Use selected item");
+        }
+
+        document.getElementById('inventoryOverlay').addEventListener('click', () => {
+            document.getElementById('inventoryModal').classList.remove('active');
+            document.getElementById('equipmentModal').classList.remove('active');
+            document.getElementById('inventoryOverlay').classList.remove('active');
+        });
+
+        // Handle slot selection for both modals
+        document.querySelectorAll('.inventory-slot').forEach(slot => {
+            slot.addEventListener('click', () => {
+                const modal = slot.closest('.modal');
+                modal.querySelectorAll('.inventory-slot').forEach(s => {
+                    s.classList.remove('selected');
+                });
+                slot.classList.add('selected');
+            });
+        });
+    </script>
+</body>
+</html>
