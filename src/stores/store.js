@@ -5,7 +5,8 @@ export const useMainStore = defineStore('main', {
     equipmentModalOpen: false,
     inventoryModalOpen: false,
     isModalOpen: false,
-    currentScreen: 'map'
+    currentScreen: 'map',
+    appState: 'main'
   }),
 
   getters: {
@@ -15,6 +16,9 @@ export const useMainStore = defineStore('main', {
   actions: {
     setCurrentScreen(screen) {
       this.currentScreen = screen
+    },
+    setAppState(state) {
+      this.appState = state
     }
   }
 })
