@@ -13,7 +13,7 @@
 
 /* Increase base font size */
 html {
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .hide-on-short {
@@ -24,4 +24,24 @@ html {
   .hide-on-short {
     display: none;
   }
+}
+
+.image-pixelated {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+.bevel-border {
+  border-top: 2px solid #4c4c4c;
+  border-left: 2px solid #4c4c4c;
+  border-right: 2px solid #939393;
+  border-bottom: 2px solid #939393;
+}
+
+.bevel-border-reverse {
+  border-top: 2px solid #c6c6c6;
+  border-left: 2px solid #c6c6c6;
+  border-right: 3px solid #292929;
+  border-bottom: 3px solid #292929;
 }

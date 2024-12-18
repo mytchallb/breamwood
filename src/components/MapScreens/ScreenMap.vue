@@ -18,7 +18,7 @@
 
 <script setup>
 import { ref } from "vue"
-import { useMainStore } from "../stores/store"
+import { useMainStore } from "../../stores/store"
 
 const store = useMainStore()
 

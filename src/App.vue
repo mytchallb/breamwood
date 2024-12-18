@@ -1,10 +1,10 @@
 <template>
   <div
     class="min-h-screen grid grid-rows-[auto_1fr] fixed inset-0 bg-repeat [image-rendering:pixelated]"
-    :style="{ backgroundImage: 'url(' + bgImage + ')', backgroundSize: '4px' }"
+    :style="{ backgroundImage: 'url(' + bgImage + ')', backgroundSize: '6px' }"
   >
-    <div class="game-container max-w-xl mx-auto w-full grid grid-rows-[auto_auto_1fr_auto] gap-1 h-[100vh] pb-2">
-      <MenuBar />
+    <div class="game-container max-w-xl mx-auto w-full grid grid-rows-[auto_auto_1fr_auto] gap-1 h-[100dvh] pb-2">
+      <Nav />
       <Stats />
       <Map />
       <Character />
@@ -42,7 +42,7 @@
 
 <script setup>
 import { ref } from "vue"
-import MenuBar from "./components/MenuBar.vue"
+import Nav from "./components/Nav.vue"
 import Map from "./components/Map.vue"
 import Stats from "./components/Stats.vue"
 import Character from "./components/Character.vue"

@@ -2,9 +2,10 @@
 export default {
   content: ['./src/**/*.{html,js,vue,ts,jsx,tsx}'],
   theme: {
-    extend: {
-
+    fontSize: {
+      base: '18px',
     },
+    extend: {},
   },
   plugins: [],
 }

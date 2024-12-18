@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import { useMainStore } from "../stores/store"
+import { useMainStore } from "../../stores/store"
 
 const store = useMainStore()
 </script>

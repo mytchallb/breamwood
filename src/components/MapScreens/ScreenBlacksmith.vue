@@ -1,7 +1,7 @@
 <template>
   <div class="relative h-full">
     <!-- Background Image -->
-    <img src="@/assets/bg-blacksmith.jpg" class="absolute inset-0 w-full h-full object-cover" alt="Blacksmith workshop" />
+    <img src="@/assets/bg-blacksmith.jpg" class="absolute inset-0 w-full h-full object-coverx" alt="Blacksmith workshop" />
 
     <!-- Content overlay -->
     <div class="relative z-10 p-2 h-full flex gap-2">
@@ -65,7 +65,7 @@
 
 <script setup>
 import { ref, computed, watch } from "vue"
-import { useMainStore } from "../stores/store"
+import { useMainStore } from "../../stores/store"
 
 const store = useMainStore()
 const selectedWeapon = ref(null)
