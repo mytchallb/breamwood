@@ -3,8 +3,9 @@
     class="min-h-screen grid grid-rows-[auto_1fr] fixed inset-0 bg-repeat [image-rendering:pixelated]"
     :style="{ backgroundImage: 'url(' + bgImage + ')', backgroundSize: '6px' }"
   >
-    <div class="game-container max-w-xl mx-auto w-full grid grid-rows-[auto_auto_1fr_auto] gap-1 h-[100dvh] pb-2">
-      <Nav />
+    <Nav class="w-full" />
+
+    <div class="max-w-[600px] max-h-[760px] grid grid-rows-[auto_1fr_auto] gap-1 p-1 mx-auto w-full justify-self-center">
       <Stats />
       <Map />
       <Character />

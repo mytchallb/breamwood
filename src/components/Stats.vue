@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-[#d1d1d1] border-2 mx-2 border-black rounded-sm flex flex-col">
+  <div class="bg-[#d1d1d1] border-2 border-black rounded-sm flex flex-col">
     <WindowBar title="Stats" />
     <!-- Stats Container -->
     <div class="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-1 p-1">

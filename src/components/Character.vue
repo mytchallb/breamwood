@@ -1,8 +1,8 @@
 <template>
   <!-- Character Panel -->
-  <div class="bg-[#bcbcbc] border-2 mx-2 border-black rounded-sm overflow-hidden flex flex-col">
+  <div class="bg-[#bcbcbc] border-2 border-black rounded-sm overflow-hidden flex flex-col">
     <WindowBar title="Character" />
-    <div class="p-3 flex-1 h-[100px]">
+    <div class="p-1 sm:p-2 md:p-3 flex-1 h-[100px]">
       <!-- Character Header -->
       <div class="flex justify-between items-start">
         <div class="flex items-center space-x-3">
