@@ -4,11 +4,11 @@
     <img src="@/assets/blacksmith-bg.png" class="absolute inset-0 w-full h-full object-cover opacity-60" alt="Blacksmith workshop" />
 
     <!-- Content overlay -->
-    <div class="relative z-10 p-2 h-full flex gap-4">
+    <div class="relative z-10 p-2 h-full flex gap-2">
       <!-- Weapon list - now on the left -->
-      <div class="rounded-lg p-2 w-64">
+      <div class="rounded-lg pr-2 w-1/2">
         <h2 class="text-xl text-white mb-4">Weapons</h2>
-        <div class="flex flex-col gap-2 max-h-[200px] overflow-y-auto">
+        <div class="flex flex-col gap-2 h-full max-h-[87%] overflow-y-auto">
           <button
             v-for="weapon in weapons"
             :key="weapon.id"
@@ -24,7 +24,7 @@
       </div>
 
       <!-- Weapon details - right side -->
-      <div class="bg-black/50 rounded-lg p-4 flex-1 text-white">
+      <div class="bg-black/50 rounded-lg p-2 w-1/2 flex-1 text-white">
         <div class="flex flex-col gap-4">
           <!-- Blacksmith icon -->
           <div class="w-12 h-12 bg-gray-700 rounded-lg"></div>
@@ -77,7 +77,7 @@ const weapons = [
   { id: 1, name: "Iron Sword", damage: "1-10", speed: 1.2, weight: 4, basePrice: 100 },
   { id: 2, name: "Steel Dagger", damage: "1-6", speed: 1.8, weight: 2, basePrice: 80 },
   { id: 3, name: "War Hammer", damage: "1-18", speed: 0.8, weight: 8, basePrice: 150 },
-  { id: 4, name: "Battle Axe", damage: "1-15", speed: 0.9, weight: 6, basePrice: 130 },
+  { id: 4, name: "Battle Axe (+1)", damage: "1-15", speed: 0.9, weight: 6, basePrice: 130 },
   { id: 5, name: "Rapier", damage: "1-8", speed: 1.6, weight: 3, basePrice: 120 },
   { id: 6, name: "Claymore", damage: "1-20", speed: 0.7, weight: 10, basePrice: 200 },
   { id: 7, name: "Shortsword", damage: "1-7", speed: 1.4, weight: 3, basePrice: 90 },

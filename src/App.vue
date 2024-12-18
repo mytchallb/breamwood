@@ -1,5 +1,8 @@
 <template>
-  <div class="bg-gray-400 min-h-screen grid grid-rows-[auto_1fr] fixed inset-0">
+  <div
+    class="min-h-screen grid grid-rows-[auto_1fr] fixed inset-0 bg-repeat [image-rendering:pixelated]"
+    :style="{ backgroundImage: 'url(' + bgImage + ')', backgroundSize: '4px' }"
+  >
     <div class="game-container max-w-xl mx-auto w-full p-2 grid grid-rows-[auto_auto_1fr_auto] gap-2 h-[100vh]">
       <MenuBar />
       <Stats />
@@ -47,6 +50,7 @@ import Character from "./components/Character.vue"
 import { toggleEquipment } from "./lib/methods"
 import { useMainStore } from "./stores/store"
 import ModalItems from "./components/ModalItems.vue"
+import bgImage from "./assets/mac-bg.jpg"
 const store = useMainStore()
 
 const equipmentItems = ref([
