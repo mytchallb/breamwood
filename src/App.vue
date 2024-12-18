@@ -1,18 +1,9 @@
 <template>
-  <div class="bg-gray-400 p-2 min-h-screen flex flex-col">
-    <div class="game-container max-w-xl mx-auto w-full flex-grow flex flex-col gap-2">
+  <div class="bg-gray-400 min-h-screen grid grid-rows-[auto_1fr] fixed inset-0">
+    <div class="game-container max-w-xl mx-auto w-full p-2 grid grid-rows-[auto_auto_1fr_auto] gap-2 h-[100vh]">
       <MenuBar />
       <Stats />
-      <div v-if="store.currentScreen !== 'map'" class="bg-white border-2 border-black rounded-md flex-1 flex flex-col">
-        <div class="bg-gradient-to-r from-black to-gray-600 text-white p-2 flex justify-between">
-          <span>{{ screenTitle }}</span>
-          <button @click="store.setCurrentScreen('map')" class="text-sm hover:text-yellow-300">Back to Map</button>
-        </div>
-        <div class="">
-          <component :is="screenComponents[store.currentScreen]" />
-        </div>
-      </div>
-      <Map v-else />
+      <Map />
       <Character />
     </div>
 
@@ -47,19 +38,13 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue"
+import { ref } from "vue"
 import MenuBar from "./components/MenuBar.vue"
 import Map from "./components/Map.vue"
 import Stats from "./components/Stats.vue"
 import Character from "./components/Character.vue"
-import ScreenInn from "./components/ScreenInn.vue"
-import ScreenMarket from "./components/ScreenMarket.vue"
-import ScreenBlacksmith from "./components/ScreenBlacksmith.vue"
-import ScreenArmor from "./components/ScreenArmor.vue"
-import ScreenArena from "./components/ScreenArena.vue"
-import ScreenDungeon from "./components/ScreenDungeon.vue"
-import ScreenCastle from "./components/ScreenCastle.vue"
-import { toggleEquipment, toggleInventory } from "./lib/methods"
+
+import { toggleEquipment } from "./lib/methods"
 import { useMainStore } from "./stores/store"
 import ModalItems from "./components/ModalItems.vue"
 const store = useMainStore()
@@ -90,27 +75,4 @@ function equipItem() {
   console.log("Equipping:", selectedEquipmentItem.value)
   closeModals()
 }
-
-const screenComponents = {
-  ScreenInn,
-  ScreenMarket,
-  ScreenBlacksmith,
-  ScreenArmor,
-  ScreenArena,
-  ScreenDungeon,
-  ScreenCastle,
-}
-
-const screenTitle = computed(() => {
-  const titles = {
-    ScreenInn: "Inn",
-    ScreenMarket: "Market",
-    ScreenBlacksmith: "Blacksmith",
-    ScreenArmor: "Armor Shop",
-    ScreenArena: "Arena",
-    ScreenDungeon: "Dungeon",
-    ScreenCastle: "Castle",
-  }
-  return titles[store.currentScreen] || ""
-})
 </script>
