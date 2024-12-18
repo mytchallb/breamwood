@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "ChiKareGo2";
+  src: url("../assets/ChiKareGo2.ttf") format("truetype");
+}
+
+* {
+  font-family: "ChiKareGo2", sans-serif;
+}
+
+/* Increase base font size */
+html {
+  font-size: 16px;
+}
+
 .hide-on-short {
   display: block;
 }

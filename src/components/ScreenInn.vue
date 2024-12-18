@@ -1,15 +1,15 @@
 <template>
   <div class="relative p-4">
     <!-- Inn background placeholder -->
-    <div class="absolute inset-0 bg-amber-100/30 z-0">
-      <div class="w-full h-full bg-[url('/inn-placeholder.jpg')] bg-cover bg-center opacity-30"></div>
+    <div class="absolute inset-0 z-0">
+      <div class="w-full h-full bg-[url('../assets/bg-inn.jpg')] bg-cover bg-center"></div>
     </div>
 
     <!-- Content overlay -->
     <div class="relative z-10">
-      <h2 class="text-2xl font-medieval mb-6">Traveler's Rest Inn</h2>
+      <h2 class="text-2xl font-medieval mb-6 text-center text-white">Traveler's Rest Inn</h2>
 
-      <div class="flex flex-col gap-2 max-w-[60%] ml-auto">
+      <div class="flex flex-col gap-2 mx-auto min-w-[230px] w-[60%]">
         <!-- Inn options -->
         <div
           v-for="(option, index) in innOptions"
@@ -31,7 +31,7 @@ const store = useMainStore()
 
 const innOptions = [
   {
-    name: "A Hot Meal",
+    name: "Food",
     price: 5,
     action: () => console.log("Buy meal"),
   },

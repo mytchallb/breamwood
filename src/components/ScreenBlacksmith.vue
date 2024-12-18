@@ -1,7 +1,7 @@
 <template>
   <div class="relative h-full">
     <!-- Background Image -->
-    <img src="@/assets/blacksmith-bg.png" class="absolute inset-0 w-full h-full object-cover opacity-60" alt="Blacksmith workshop" />
+    <img src="@/assets/bg-blacksmith.jpg" class="absolute inset-0 w-full h-full object-cover" alt="Blacksmith workshop" />
 
     <!-- Content overlay -->
     <div class="relative z-10 p-2 h-full flex gap-2">

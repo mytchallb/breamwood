@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white border-2 border-black rounded-md pb-2 flex flex-col">
+  <div class="bg-white border-2 mx-2 border-black rounded-sm pb-2 flex flex-col">
     <div class="bg-gradient-to-r from-black to-gray-600 text-white p-1 hide-on-short">Stats</div>
     <!-- Stats Container -->
     <div class="grid grid-cols-2 gap-4 pt-1 px-2">

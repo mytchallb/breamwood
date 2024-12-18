@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white border-2 border-black rounded-md flex flex-col h-full overflow-hidden">
+  <div class="bg-white border-2 mx-2 border-black rounded-sm flex flex-col h-full overflow-hidden">
     <div class="bg-gradient-to-r from-black to-gray-600 text-white p-2 flex justify-between">
       <span>{{ screenTitle }}</span>
       <button v-if="store.currentScreen !== 'map'" @click="store.setCurrentScreen('map')" class="text-sm hover:text-yellow-300">Back to Map</button>

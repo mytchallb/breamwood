@@ -1,6 +1,6 @@
 <template>
   <!-- Character Panel -->
-  <div class="bg-white border-2 border-black rounded-md overflow-hidden flex flex-col">
+  <div class="bg-white border-2 mx-2 border-black rounded-sm overflow-hidden flex flex-col">
     <div class="bg-gradient-to-r from-black to-gray-600 text-white p-1 hide-on-short">Character</div>
     <div class="bg-gray-200 p-3 flex-1 h-[100px]">
       <!-- Character Header -->
