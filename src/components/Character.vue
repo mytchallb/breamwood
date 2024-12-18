@@ -6,8 +6,11 @@
       <!-- Character Header -->
       <div class="flex justify-between items-start">
         <div class="flex items-center space-x-3">
-          <div class="w-16 h-16 bevel-border-reverse bg-white cursor-pointer" @click="toggleEquipment">
-            <img src="../assets/character.png" alt="Character" class="w-full h-full object-cover" />
+          <div
+            class="w-16 h-16 bevel-border-reverse bg-white cursor-pointer active:shadow-[inset_2px_2px_0_rgba(0,0,0,0.5)] active:translate-x-[1px] active:translate-y-[1px]"
+            @click="toggleEquipment"
+          >
+            <img src="../assets/character.png" alt="Character" class="w-full h-full object-cover pointer-events-none" />
           </div>
           <div>
             <div class="font-bold text-lg">Marcus, Lvl 5</div>
@@ -15,8 +18,11 @@
             <div class="text-xs text-gray-500">1250 / 2000 XP</div>
           </div>
         </div>
-        <div class="w-16 h-16 bevel-border-reverse bg-white cursor-pointer hover:bg-gray-100" @click="toggleInventory">
-          <img src="../assets/bag.jpg" alt="Inventory" class="w-full h-full object-cover" />
+        <div
+          class="w-16 h-16 bevel-border-reverse bg-white cursor-pointer hover:bg-gray-100 active:bevel-pressed active:translate-x-[1px] active:translate-y-[1px]"
+          @click="toggleInventory"
+        >
+          <img src="../assets/bag.jpg" alt="Inventory" class="w-full h-full object-cover pointer-events-none" />
         </div>
       </div>
     </div>
