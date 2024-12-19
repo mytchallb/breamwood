@@ -38,21 +38,38 @@
     </div>
 
     <ModalItems />
+    <DialogBox
+      v-model="showDialog"
+      title="Alert"
+      message="Are you sure you want to continue?"
+      :buttons="[
+        {
+          label: 'Cancel',
+          onClick: () => handleCancel(),
+        },
+        {
+          label: 'OK',
+          primary: true,
+          onClick: () => handleOK(),
+        },
+      ]"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue"
+import { ref, onMounted } from "vue"
 import Nav from "./components/Nav.vue"
 import Map from "./components/Map.vue"
 import Stats from "./components/Stats.vue"
 import Character from "./components/Character.vue"
-
+import DialogBox from "./components/DialogBox.vue"
 import { toggleEquipment } from "./lib/methods"
 import { useMainStore } from "./stores/store"
 import ModalItems from "./components/ModalItems.vue"
 import bgImage from "./assets/mac-bg.jpg"
 const store = useMainStore()
+const showDialog = ref(true)
 
 const equipmentItems = ref([
   { name: "Axe", stats: "Dmg: 15-20\nSpd: 1.2s" },
