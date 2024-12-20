@@ -1,15 +1,30 @@
 <template>
   <div class="bg-[#d1d1d1] border-2 border-black rounded-sm flex flex-col">
-    <WindowBar title="Stats" />
+    <WindowBar title="Stats" v-if="props.showWindowBar" />
     <!-- Stats Container -->
     <div class="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-1 p-1">
-      <template v-for="(stat, index) in allStats" :key="stat.name">
-        <div class="space-y-1">
+      <!-- Stats -->
+      <template v-if="props.show === 'all' || props.show === 'stats'">
+        <div class="space-y-1" v-for="(value, name) in state.player.stats" :key="name">
           <div class="flex justify-between p-1 text-sm bevel-border bg-[#bcbcbc]">
-            <span>{{ stat.name }}</span>
-            <span>{{ stat.value }}</span>
+            <span class="leading-4 capitalize">{{ name }}</span>
+            <span class="leading-4">{{ value }}/100</span>
           </div>
-          <hr v-if="index == 2 || index == 3" class="border-t border-gray-400" />
+        </div>
+      </template>
+      <hr v-if="props.show !== 'skills'" class="border-[#4c4c4c] border" />
+      <hr v-if="props.show !== 'skills'" class="border-[#4c4c4c] border" />
+      <!-- Skills -->
+      <template v-if="props.show === 'all' || props.show === 'skills'">
+        <div class="space-y-1" v-for="(value, name) in state.player.skills" :key="name">
+          <div class="flex justify-between p-1 text-sm bevel-border bg-[#bcbcbc]">
+            <span class="leading-4 capitalize">{{ name }}</span>
+            <div class="flex items-center">
+              <span v-if="showClassBuffs && getClassBuff(name)" class="text-green-700 mr-2">(+{{ getClassBuff(name) }})</span>
+              <span class="leading-4">{{ value }}</span>
+              <span v-if="name === 'criticalHit'" class="leading-4 mr-[-3px]">%</span>
+            </div>
+          </div>
         </div>
       </template>
     </div>
@@ -17,17 +32,33 @@
 </template>
 
 <script setup>
-import { ref } from "vue"
 import WindowBar from "./WindowBar.vue"
+import { useMainStore } from "../stores/store"
+const state = useMainStore()
 
-const allStats = ref([
-  { name: "Health", value: "100 / 100" },
-  { name: "Stamina", value: "85 / 100" },
-  { name: "Hunger", value: "90 / 100" },
-  { name: "Strength", value: "14" },
-  { name: "Agility", value: "12" },
-  { name: "Sanity", value: "10/100" },
-  { name: "Defense", value: "35" },
-  { name: "Critical Rate", value: "15%" },
-])
+const props = defineProps({
+  show: {
+    type: String,
+    default: "all",
+    validator: (value) => ["all", "stats", "skills"].includes(value),
+  },
+  showWindowBar: {
+    type: Boolean,
+    default: true,
+  },
+  showClassBuffs: {
+    type: Boolean,
+    default: false,
+  },
+})
+
+const getClassBuff = (statName) => {
+  if (!state.player.classType) return null
+
+  const classBuffs = state.playerClassBuffs.find((c) => c.name === state.player.classType)
+  if (!classBuffs) return null
+
+  const buff = classBuffs.buffs.find((b) => Object.keys(b)[0] === statName)
+  return buff ? Object.values(buff)[0] : null
+}
 </script>

@@ -1,6 +1,6 @@
 <template>
   <!-- Menu Bar -->
-  <div class="bg-white border-b border-black flex text-sm h-5" ref="menuWrapper">
+  <div class="bg-white border-b border-t border-black flex text-sm h-5" ref="menuWrapper">
     <div v-for="(menu, menuIndex) in menuItems" :key="menuIndex" class="relative">
       <div
         class="px-2 h-full flex items-center cursor-default select-none"
@@ -22,6 +22,10 @@
           {{ item }}
         </div>
       </div>
+    </div>
+    <!-- time -->
+    <div class="pr-2 h-full flex flex-1 items-center justify-end">
+      <span class="text-xs">{{ currentTime }}</span>
     </div>
   </div>
 </template>
@@ -71,5 +75,21 @@ function toggleDropdown(index) {
 
 function handleMenuAction(item) {
   console.log(`Menu action: ${item}`)
+}
+
+const currentTime = ref("12:00")
+
+onMounted(() => {
+  updateTime() // Initial update
+  setInterval(updateTime, 1000) // Update every second
+})
+
+function updateTime() {
+  const now = new Date()
+  currentTime.value = now.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  })
 }
 </script>
