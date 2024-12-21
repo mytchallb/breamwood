@@ -1,6 +1,8 @@
-# Breamwood
+# BreamWood
 
-A Vue prototype for a free mobile game in React Native.
+A free open-source Vue.js RPG game based on the early Macintosh System 7 games.
+
+See a hosted version at: <https://tools.mytchall.dev/breamwood/>
 
 ## Installation
 
@@ -11,13 +13,6 @@ Open this folder in your terminal and run:
 - `npm i` to intall dependencies.
 - `npm run dev` to run dev server.
 
-## Development
+## Contributing
 
-- Desktop (if quit)
-- Load game
-- New Character Screen
-- Main Game screen
-- Buildings
-
-License idea?
-https://github.com/facebook/stetho/blob/main/LICENSE
+If you want to submit a pull request, make sure commits are small and readable `:)`

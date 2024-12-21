@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-[100dvh] min-w-[333px] grid grid-rows-[auto_1fr] fixed inset-0 bg-repeat [image-rendering:pixelated]"
+    class="h-[100dvh] min-w-[333px] grid grid-rows-[auto_1fr] fixed inset-0 bg-repeat image-pixelated [image-rendering:pixelated]"
     :style="{ backgroundImage: 'url(' + bgImage + ')', backgroundSize: '6px' }"
   >
     <Nav class="w-full" />
@@ -16,7 +16,7 @@
     <div class="absolute z-[-1] top-[12%] right-[45%]" @click="handleClick" ref="iconRef">
       <div class="flex flex-col cursor-pointer justify-center items-center">
         <img class="w-10 h-10 object-contain" :class="{ 'bg-blue-700 bg-opacity-50': appIconSelected }" src="./assets/appIcon.png" alt="" />
-        <span class="bg-white px-1 mt-1" :class="{ '!bg-blue-700': appIconSelected }" style="line-height: 1">Bremesgraf</span>
+        <span class="bg-white px-1 mt-1" :class="{ '!bg-blue-700': appIconSelected }" style="line-height: 1">BreamWood</span>
       </div>
     </div>
 

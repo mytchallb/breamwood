@@ -4,7 +4,7 @@
       <WindowBar title="New Game" />
       <div class="p-6">
         <template v-if="stage === 0">
-          <p class="mb-0">Welcome to Bremesgraf!!</p>
+          <p class="mb-0">Welcome to BreamWood!!</p>
           <p>Please enter your name</p>
           <input v-on:submit="nextStage" v-model="name" type="text" autocomplete="off" class="bg-gray-100 bevel-border px-2" placeholder="" />
 
