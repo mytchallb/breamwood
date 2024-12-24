@@ -4,7 +4,7 @@ A free open-source Vue.js RPG game based on the early Macintosh System 7 games.
 
 See a hosted version at: <https://tools.mytchall.dev/breamwood/>
 
-Vue.js, Pinia and Tailwind are used.
+<img src="screenshot.png" alt="BreamWood game screenshot" style="max-width: 400px;" />
 
 ## Installation
 
@@ -15,7 +15,9 @@ Open this folder in your terminal and run:
 - `npm i` to intall dependencies.
 - `npm run dev` to run dev server.
 
-## Development Progress
+## Development
+
+Vue.js, Pinia and Tailwind are used.
 
 To get to v1, this list needs to be complete:
 
@@ -28,6 +30,8 @@ To get to v1, this list needs to be complete:
 ### Screens
 
 [x] - Build Blacksmith screen
+[ ] - Get Blacksmith features working
+
 [ ] - Build Armorer screen
 [ ] - Build Inn screen
 [ ] - Build Arena screen
