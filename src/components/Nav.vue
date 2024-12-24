@@ -1,6 +1,6 @@
 <template>
   <!-- Menu Bar -->
-  <div class="bg-white border-b border-t border-black flex text-sm h-5" ref="menuWrapper">
+  <div class="bg-white border-b border-t border-black flex text-sm h-5 z-50" ref="menuWrapper">
     <div v-for="(menu, menuIndex) in menuItems" :key="menuIndex" class="relative">
       <div
         class="px-2 h-full flex items-center cursor-default select-none"
@@ -33,12 +33,15 @@
 <script setup>
 import { ref, onMounted } from "vue"
 import { onClickOutside } from "@vueuse/core"
+import { useMainStore } from "../stores/store"
+
+const store = useMainStore()
 
 const menuItems = ref([
   {
     name: "",
     image: "../assets/apple.png",
-    items: ["Save", "Mute", "Quit"],
+    items: ["Mute", "Quit"],
     dropdownOpen: false,
   },
   {
@@ -74,7 +77,13 @@ function toggleDropdown(index) {
 }
 
 function handleMenuAction(item) {
+  if (item === "Quit") {
+    store.resetState()
+    store.setCurrentScreen("map")
+    store.setAppState("main")
+  }
   console.log(`Menu action: ${item}`)
+  menuItems.value.forEach((item) => (item.dropdownOpen = false))
 }
 
 const currentTime = ref("12:00")

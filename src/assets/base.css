@@ -30,6 +30,7 @@ html {
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;
 }
 
 .bevel-border {
@@ -66,8 +67,8 @@ html {
 }
 
 .dialog-box {
-  position: relative;
-  background: white;
+  /* position: relative; */
+  /* background: white; */
   box-shadow:
     0 0 0 1px black,
     /* innermost black */ 0 0 0 2px #9292c5,
@@ -158,4 +159,12 @@ body {
 #app {
   width: 100%;
   height: 100%;
+}
+
+/* Add these to your existing CSS */
+body {
+  -webkit-touch-callout: none; /* Disable callouts */
+  -webkit-user-select: none; /* Disable selection */
+  -webkit-tap-highlight-color: transparent; /* Remove tap highlight */
+  overscroll-behavior: none; /* Prevent pull-to-refresh */
 }

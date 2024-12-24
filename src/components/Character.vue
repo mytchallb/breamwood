@@ -13,9 +13,9 @@
             <img src="../assets/character.png" alt="Character" class="w-full h-full object-cover pointer-events-none" />
           </div>
           <div class="flex flex-col h-16 py-1 justify-between">
-            <div class="font-bold text-lg">Marcus, Lvl 5</div>
-            <div class="text-lg text-[#ffe927]">1000 Gold</div>
-            <div class="text-xs text-gray-500">1250 / 2000 XP</div>
+            <div class="font-bold text-lg">{{ store.player.name }}, Lvl {{ store.player.level }}</div>
+            <div class="text-lg text-yellow">{{ store.player.gold }} Gold</div>
+            <div class="text-sm text-gray-500">{{ store.player.xp }} / {{ store.player.xpMax }} XP</div>
           </div>
         </div>
         <div
@@ -31,4 +31,6 @@
 <script setup>
 import { toggleEquipment, toggleInventory } from "../lib/methods"
 import WindowBar from "./WindowBar.vue"
+import { useMainStore } from "../stores/store"
+const store = useMainStore()
 </script>

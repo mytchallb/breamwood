@@ -4,7 +4,7 @@
     <div class="flex-1 h-full overflow-hidden">
       <component :is="screenComponents[store.currentScreen]" class="h-full" />
     </div>
-    <button v-if="store.currentScreen !== 'map'" @click="store.setCurrentScreen('map')" class="text-sm hover:text-yellow-300">Back to Map</button>
+    <button v-if="store.currentScreen !== 'map'" @click="store.setCurrentScreen('map')" class="bevel-pressed">< Back to Map</button>
   </div>
 </template>
 

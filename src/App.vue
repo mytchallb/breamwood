@@ -5,7 +5,11 @@
   >
     <Nav class="w-full" />
 
-    <div v-if="!store.newGame" class="max-w-[600px] max-h-[760px] grid grid-rows-[auto_1fr_auto] gap-1 p-1 mx-auto w-full justify-self-center">
+    <div
+      v-if="!store.newGame"
+      class="max-w-[600px] grid grid-rows-[auto_1fr_auto] gap-1 p-1 mx-auto w-full justify-self-center"
+      style="height: calc(100vh - 23px); max-height: 760px"
+    >
       <Stats />
       <Map />
       <Character />

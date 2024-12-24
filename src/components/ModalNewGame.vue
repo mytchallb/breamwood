@@ -1,28 +1,32 @@
 <template>
   <div class="fixed top-0 left-0 w-full h-full flex items-center justify-center">
-    <div class="bg-white w-full max-w-[400px] mx-4 border-2 border-black rounded-sm flex flex-col">
+    <div class="bg-white w-full max-w-[370px] mx-4 border-2 border-black rounded-sm flex flex-col">
       <WindowBar title="New Game" />
-      <div class="p-6">
+      <div class="p-6 min-h-[360px] flex flex-col justify-between">
         <template v-if="stage === 0">
-          <p class="mb-0">Welcome to BreamWood!!</p>
-          <p>Please enter your name</p>
-          <input v-on:submit="nextStage" v-model="name" type="text" autocomplete="off" class="bg-gray-100 bevel-border px-2" placeholder="" />
+          <div>
+            <p class="mb-0">Welcome to BreamWood!!</p>
+            <p>Please enter your name</p>
+            <input v-on:submit="nextStage" v-model="name" type="text" autocomplete="off" class="bg-gray-100 bevel-border px-2" placeholder="" />
 
-          <div class="my-4">
-            <p>Choose your class</p>
-            <ul class="pl-2 mt-2 space-y-1">
-              <li v-for="classInfo in state.playerClassBuffs" :key="classInfo.name" class="flex items-center gap-2">
-                <input type="radio" name="class" :id="classInfo.name" :value="classInfo.name" v-model="playerClass" />
-                <label :for="classInfo.name">{{ formatClassName(classInfo) }}</label>
-              </li>
-            </ul>
+            <div class="my-4">
+              <p>Choose your class</p>
+              <ul class="pl-2 mt-2 space-y-1">
+                <li v-for="classInfo in state.playerClassBuffs" :key="classInfo.name" class="flex items-center gap-2">
+                  <input type="radio" name="class" :id="classInfo.name" :value="classInfo.name" v-model="playerClass" />
+                  <label :for="classInfo.name">{{ formatClassName(classInfo) }}</label>
+                </li>
+              </ul>
+            </div>
           </div>
-          <button
-            class="ml-auto active:bg-black active:text-white px-4 rounded-md border border-black min-w-[70px] h-[26px] flex items-center outline outline-[3px] outline-offset-1 outline-black justify-center"
-            @click="nextStage"
-          >
-            OK
-          </button>
+          <div>
+            <button
+              class="ml-auto active:bg-black active:text-white px-4 rounded-md border border-black min-w-[70px] h-[26px] flex items-center outline outline-[3px] outline-offset-1 outline-black justify-center"
+              @click="nextStage"
+            >
+              OK
+            </button>
+          </div>
         </template>
 
         <template v-if="stage === 1">
@@ -31,15 +35,23 @@
           <Stats class="mt-4" :showWindowBar="false" :show="'skills'" :showClassBuffs="true" />
 
           <div class="flex gap-4 mt-6 justify-end">
+            <div class="flex-1">
+              <button
+                @click="prevStage"
+                class="active:bg-black bg-white active:text-white px-4 rounded-md border border-black min-w-[70px] h-[26px] flex items-center justify-center"
+              >
+                Back
+              </button>
+            </div>
             <button
               @click="rollStats"
-              class="active:bg-black active:text-white px-4 rounded-md border border-black min-w-[70px] h-[26px] flex items-center justify-center"
+              class="active:bg-black bg-white active:text-white px-4 rounded-md border border-black min-w-[70px] h-[26px] flex items-center justify-center"
             >
               Roll
             </button>
             <button
               @click="nextStage"
-              class="active:bg-black active:text-white px-4 rounded-md border border-black min-w-[70px] h-[26px] flex items-center outline outline-[3px] outline-offset-1 outline-black justify-center"
+              class="active:bg-black bg-white active:text-white px-4 rounded-md border border-black min-w-[70px] h-[26px] flex items-center outline outline-[3px] outline-offset-1 outline-black justify-center"
             >
               OK
             </button>
@@ -76,6 +88,11 @@ const formatClassName = (classInfo) => {
     })
     .join(", ")
   return `${classInfo.name.charAt(0).toUpperCase() + classInfo.name.slice(1)} (${buffText})`
+}
+const prevStage = () => {
+  if (stage.value > 0) {
+    stage.value--
+  }
 }
 const nextStage = () => {
   if (stage.value === 0) {

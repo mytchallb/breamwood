@@ -6,7 +6,7 @@
       <!-- Stats -->
       <template v-if="props.show === 'all' || props.show === 'stats'">
         <div class="space-y-1" v-for="(value, name) in state.player.stats" :key="name">
-          <div class="flex justify-between p-1 text-sm bevel-border bg-[#bcbcbc]">
+          <div class="flex justify-between p-1 bevel-border bg-[#bcbcbc]">
             <span class="leading-4 capitalize">{{ name }}</span>
             <span class="leading-4">{{ value }}/100</span>
           </div>
@@ -17,11 +17,11 @@
       <!-- Skills -->
       <template v-if="props.show === 'all' || props.show === 'skills'">
         <div class="space-y-1" v-for="(value, name) in state.player.skills" :key="name">
-          <div class="flex justify-between p-1 text-sm bevel-border bg-[#bcbcbc]">
+          <div class="flex justify-between p-1 bevel-border bg-[#bcbcbc]">
             <span class="leading-4 capitalize">{{ name }}</span>
-            <div class="flex items-center">
+            <div class="flex items-center leading-4">
               <span v-if="showClassBuffs && getClassBuff(name)" class="text-green-700 mr-2">(+{{ getClassBuff(name) }})</span>
-              <span class="leading-4">{{ value }}</span>
+              <span>{{ value }}</span>
               <span v-if="name === 'criticalHit'" class="leading-4 mr-[-3px]">%</span>
             </div>
           </div>
