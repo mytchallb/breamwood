@@ -9,25 +9,22 @@
 </template>
 
 <script setup>
-import { computed } from "vue"
+import { computed, h } from "vue"
 import { useMainStore } from "../stores/store"
 import WindowBar from "./WindowBar.vue"
 import ScreenMap from "./MapScreens/ScreenMap.vue"
-import ScreenMarket from "./MapScreens/ScreenMarket.vue"
-import ScreenBlacksmith from "./MapScreens/ScreenBlacksmith.vue"
-import ScreenArmor from "./MapScreens/ScreenArmor.vue"
 import ScreenInn from "./MapScreens/ScreenInn.vue"
 import ScreenArena from "./MapScreens/ScreenArena.vue"
 import ScreenDungeon from "./MapScreens/ScreenDungeon.vue"
 import ScreenCastle from "./MapScreens/ScreenCastle.vue"
-
+import ScreenShop from "./MapScreens/ScreenShop.vue"
 const store = useMainStore()
 
 const screenComponents = {
   map: ScreenMap,
-  ScreenMarket,
-  ScreenBlacksmith,
-  ScreenArmor,
+  ScreenMarket: h(ScreenShop, { shopType: "items" }),
+  ScreenBlacksmith: h(ScreenShop, { shopType: "weapons" }),
+  ScreenArmor: h(ScreenShop, { shopType: "armor" }),
   ScreenInn,
   ScreenArena,
   ScreenDungeon,

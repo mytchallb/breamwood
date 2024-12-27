@@ -53,7 +53,6 @@ import ModalNewGame from "./components/ModalNewGame.vue"
 import Stats from "./components/Stats.vue"
 import Character from "./components/Character.vue"
 import DialogBox from "./components/DialogBox.vue"
-import { toggleEquipment } from "./lib/methods"
 import { useMainStore } from "./stores/store"
 import ModalItems from "./components/ModalItems.vue"
 import bgImage from "./assets/mac-bg.jpg"
@@ -63,13 +62,6 @@ const store = useMainStore()
 
 const showDialog = ref(false)
 const appIconSelected = ref(false)
-
-const equipmentItems = ref([
-  { name: "Axe", stats: "Dmg: 15-20\nSpd: 1.2s" },
-  { name: "Shield", stats: "Def: +5\nBlock: 25%" },
-  { name: "Amulet", stats: "HP: +10\nLuck: +2" },
-  { name: "Ring", stats: "Def: +2\nStam: +5" },
-])
 
 const isModalOpen = ref(false)
 const equipmentModalOpen = ref(false)

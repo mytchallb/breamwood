@@ -1,9 +1,5 @@
 import { defineStore } from "pinia"
 
-export const merchantStore = defineStore("merchant", {
-  state: () => ({}),
-})
-
 export const useMainStore = defineStore("main", {
   state: () => ({
     equipmentModalOpen: false,
@@ -97,7 +93,7 @@ export const useMainStore = defineStore("main", {
         { id: 2, uid: 2, name: "Chainmail", description: "A sturdy armor made of chainmail.", defense: 2, weight: 8, price: 100, resale: 50 },
         { id: 3, uid: 3, name: "Plate Armor", description: "A heavy armor made of plate.", defense: 3, weight: 12, price: 200, resale: 100 },
       ],
-      general: [
+      items: [
         { id: 1, uid: 1, name: "Health Potion", description: "A basic healing potion.", stats: "+20 Health", weight: 1, price: 10, resale: 5 },
         { id: 2, uid: 2, name: "Super Health Potion", description: "A major healing potion.", stats: "+50 Health", weight: 1, price: 20, resale: 10 },
         { id: 3, uid: 3, name: "Strength Potion", description: "A temporary attack boost.", stats: "+10 Attack", weight: 1, price: 15, resale: 7.5 },
@@ -151,13 +147,7 @@ export const useMainStore = defineStore("main", {
       xp: 0,
       xpMax: 100,
       gold: 200,
-      items: [
-        { id: 1, uid: 1, name: "Health Potion", stats: "+20 Health", description: "+20 HP" },
-        { id: 2, uid: 2, name: "Health Potion II", stats: "+50 Health", description: "+50 HP" },
-        { id: 3, uid: 3, name: "Strength Potion", stats: "+10 Health", description: "+10 HP" },
-        { id: 4, uid: 4, name: "Defense Potion", stats: "+10 Health", description: "+10 HP" },
-        { id: 5, uid: 5, name: "Speed Potion", stats: "+10 Health", description: "+10 HP" },
-      ],
+      items: [],
       weapons: [],
       armor: [],
       stats: {
@@ -183,10 +173,6 @@ export const useMainStore = defineStore("main", {
   actions: {
     resetState() {
       this.$reset()
-      this.player.weapons = []
-      this.player.armor = []
-      this.player.items = []
-      this.player.gold = 200
     },
     setCurrentScreen(screen) {
       this.currentScreen = screen
