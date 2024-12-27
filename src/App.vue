@@ -8,7 +8,7 @@
     <div
       v-if="!store.newGame"
       class="max-w-[600px] grid grid-rows-[auto_1fr_auto] gap-1 p-1 mx-auto w-full justify-self-center"
-      style="height: calc(100vh - 23px); max-height: 760px"
+      style="height: calc(100dvh - 23px); max-height: 760px"
     >
       <Stats />
       <Map />
@@ -24,33 +24,8 @@
       </div>
     </div>
 
-    <!-- Overlay -->
-    <div v-if="store.isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 z-40" @click="closeModals"></div>
-
-    <!-- Equipment Modal -->
-    <div v-if="store.equipmentModalOpen" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white border-2 border-black w-80 z-50">
-      <div class="bg-gradient-to-r from-black to-gray-600 text-white p-2">Equipment</div>
-      <div class="grid grid-cols-3 gap-2 p-3">
-        <div
-          v-for="(item, index) in equipmentItems"
-          :key="index"
-          class="border-2 border-gray-600 p-2 cursor-pointer"
-          :class="{ 'bg-gray-200': selectedEquipmentItem === item }"
-          @click="selectEquipmentItem(item)"
-        >
-          <div class="font-bold text-center">{{ item.name }}</div>
-          <div class="text-xs text-gray-600 text-center mt-1">
-            {{ item.stats }}
-          </div>
-        </div>
-      </div>
-      <div class="flex border-t border-gray-400">
-        <button class="flex-1 p-2 hover:bg-gray-100" @click="toggleEquipment">Close</button>
-        <button class="flex-1 p-2 border-r border-gray-400 hover:bg-gray-100" @click="equipItem">Equip</button>
-      </div>
-    </div>
-
     <ModalItems />
+    <ModalMessage v-if="store.infoMessage" :message="store.infoMessage" />
     <DialogBox
       v-model="showDialog"
       title="Alert"
@@ -83,6 +58,7 @@ import { useMainStore } from "./stores/store"
 import ModalItems from "./components/ModalItems.vue"
 import bgImage from "./assets/mac-bg.jpg"
 import { onClickOutside } from "@vueuse/core"
+import ModalMessage from "./components/ModalMessage.vue"
 const store = useMainStore()
 
 const showDialog = ref(false)

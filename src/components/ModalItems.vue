@@ -5,56 +5,95 @@
 
     <div class="grid grid-cols-3 gap-2 p-3">
       <div
-        v-for="(item, index) in inventoryItems"
-        :key="index"
-        class="flex items-center flex-col border-2 border-black p-1 cursor-pointer min-h-[100px] bg-white"
-        :class="{ '!bg-black  text-white': store.selectedInventoryItem === item }"
-        @click="selectInventoryItem(item)"
+        v-for="i in Array.from({ length: 9 }, (_, i) => i)"
+        :key="i"
+        class="flex items-center flex-col p-1 cursor-pointer min-h-[80px] aspect-square bg-white overflow-y-auto"
+        :class="{
+          'border-2 border-black': currentItems[i],
+          'border-2 border-dotted border-black bg-transparent': !currentItems[i],
+          '!bg-black text-white': store.selectedInventoryItem === currentItems[i] && currentItems[i],
+        }"
+        @click="currentItems[i] && selectInventoryItem(currentItems[i])"
       >
-        <div class="font-bold text-center leading-4 h-[40px] flex items-center justify-center">
-          {{ item.name }}
-        </div>
-        <div
-          class="text-xs text-center mt-1 leading-4"
-          :class="{ 'text-gray-400': store.selectedInventoryItem === item, 'text-gray-600': store.selectedInventoryItem !== item }"
-        >
-          {{ item.description }}
-        </div>
+        <template v-if="currentItems[i]">
+          <div class="font-bold text-center leading-4 h-[40px] flex items-center justify-center">
+            {{ currentItems[i].name }}
+          </div>
+          <div
+            class="text-xs text-center mt-1 leading-1"
+            :class="{ 'text-gray-400': store.selectedInventoryItem === currentItems[i], 'text-gray-600': store.selectedInventoryItem !== currentItems[i] }"
+          >
+            <span class="text-xs leading-3">
+              {{ currentItems[i].description }}
+            </span>
+          </div>
+        </template>
       </div>
     </div>
+
+    <div>
+      <div class="bg-white m-2 text-black flex justify-around bevel-border-reverse">
+        <span
+          v-for="tab in ['Items', 'Weapons', 'Armor']"
+          :key="tab"
+          class="py-1 flex-1 text-center cursor-pointer"
+          :class="{ 'bg-gray-400': activeTab === tab }"
+          @click="selectTab(tab)"
+        >
+          {{ tab }}
+        </span>
+      </div>
+    </div>
+
     <div class="flex justify-between p-4">
-      <Button text="Close" :onClick="toggleInventory" />
-      <Button text="Use" :onClick="useItem" :highlight="true" />
+      <Button text="Close" :onClick="toggleInventory" :highlight="true" />
+      <div class="flex gap-2">
+        <Button text="Drop" :onClick="dropItem" />
+        <Button text="Use" :onClick="useItem" />
+      </div>
     </div>
   </div>
 </template>
 <script setup>
-import { ref } from "vue"
+import { ref, watch, onMounted, computed } from "vue"
 import { useMainStore } from "../stores/store"
 import { toggleInventory } from "../lib/methods"
-import WindowBar from "./WindowBar.vue"
 import Button from "./Button.vue"
 const store = useMainStore()
 
-// have 9 items, even if empty
-const inventoryItems = ref([
-  { name: "Health Potion", amount: 4, stats: "+20 Health", description: "+20 HP" },
-  { name: "Health Potion II", amount: 4, stats: "+50 Health", description: "+50 HP" },
-  { name: "Strength Potion", amount: 4, stats: "+10 Health", description: "+10 HP" },
-  { name: "Defense Potion", amount: 4, stats: "+10 Health", description: "+10 HP" },
-  { name: "Speed Potion", amount: 4, stats: "+10 Health", description: "+10 HP" },
-  { name: "Antidote", amount: 4, stats: "+10 Health", description: "+10 HP" },
-  { name: "Revival Item", amount: 4, stats: "+10 Health", description: "FULL HP" },
-  { name: "Throwing Weapons", amount: 4, stats: "+10 Health", description: "1-20 DMG" },
-  { name: "Daggers", amount: 4, stats: "+10 Health", description: "1-20 DMG" },
-])
+const activeTab = ref("Items")
+const currentItems = computed(() => {
+  switch (activeTab.value) {
+    case "Items":
+      return store.player.items
+    case "Weapons":
+      return store.player.weapons
+    case "Armor":
+      return store.player.armor
+    default:
+      return []
+  }
+})
+
+function selectTab(tab) {
+  activeTab.value = tab
+  store.selectedInventoryItem = null
+}
 
 function selectInventoryItem(item) {
-  store.selectedInventoryItem = item
+  if (store.selectedInventoryItem === item) {
+    store.selectedInventoryItem = null
+  } else {
+    store.selectedInventoryItem = item
+  }
 }
 
 function useItem() {
   console.log("Using item:", store.selectedInventoryItem)
+}
+
+function dropItem() {
+  console.log("Dropping item:", store.selectedInventoryItem)
 }
 
 /*

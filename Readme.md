@@ -24,7 +24,9 @@ To get to v1, this list needs to be complete:
 ### UX
 
 [x] - Build basic UI components
+
 [x] - Get New Game working
+
 [ ] - Get Save/Quit working (currently uses localstorage)
 
 ### Screens

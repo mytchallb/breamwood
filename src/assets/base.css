@@ -145,6 +145,10 @@ html {
   line-height: 1;
 }
 
+.leading-1 {
+  line-height: 0.25em;
+}
+
 /* Add these rules to prevent scrolling */
 html,
 body {

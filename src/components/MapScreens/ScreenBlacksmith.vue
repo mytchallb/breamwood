@@ -4,7 +4,7 @@
     <div class="w-full flex flex-col">
       <div class="flex flex-col h-full bg-white overflow-y-auto m-1 mr-0 bevel-border">
         <button
-          v-for="weapon in weapons"
+          v-for="weapon in displayedWeapons"
           :key="weapon.id"
           @click="selectedWeapon = weapon"
           :class="['text-left p-1 ', selectedWeapon?.id === weapon.id ? 'bg-black text-white' : '']"
@@ -47,15 +47,20 @@
               </div>
 
               <div class="text-xl flex justify-between gap-2 mb-2 text-center text-yellow">
-                <span class="text-right">{{ currentPrice }}</span>
+                <span class="text-right">{{ tradeMode === "buy" ? selectedWeapon.price : (selectedWeapon?.resale ?? 0) }}</span>
                 <span class="text-left">GOLD</span>
               </div>
             </div>
           </div>
 
           <div class="flex gap-2 w-full justify-around">
-            <Button text="Haggle" :onClick="haggle" :disabled="!canHaggle" />
-            <Button text="Buy" :onClick="buyWeapon" :disabled="store.gold < currentPrice" :highlight="true" />
+            <template v-if="tradeMode === 'buy'">
+              <Button text="Haggle" :onClick="haggle" :disabled="!canHaggle" />
+              <Button text="Buy" :onClick="buyWeapon" :disabled="!canBuy" :highlight="true" />
+            </template>
+            <template v-else>
+              <Button text="Sell" :onClick="sellWeapon" :disabled="!selectedWeapon" :highlight="true" />
+            </template>
           </div>
         </div>
       </div>
@@ -67,6 +72,7 @@
 import { ref, computed, watch } from "vue"
 import { useMainStore } from "../../stores/store"
 import Button from "../Button.vue"
+import { createGlobalState } from "@vueuse/core"
 
 const store = useMainStore()
 const selectedWeapon = ref(null)
@@ -80,7 +86,7 @@ const weapons = store.merchantItems.weapons
 // Watch for weapon selection to reset price
 watch(selectedWeapon, (weapon) => {
   if (weapon) {
-    currentPrice.value = weapon.basePrice
+    currentPrice.value = weapon.price
     hagglesLeft.value = 3
   }
 })
@@ -89,6 +95,7 @@ const canHaggle = computed(() => hagglesLeft.value > 0)
 
 function haggle() {
   console.log("haggling...")
+
   if (!canHaggle.value) return
 
   const reduction = Math.random() * 0.15 // 0-15% reduction
@@ -96,14 +103,45 @@ function haggle() {
   hagglesLeft.value--
 }
 
-function buyWeapon() {
-  if (!selectedWeapon.value || store.gold < currentPrice.value) return
+const canBuy = computed(() => {
+  // store.player.gold = 1000
+  // store.player.weapons = []
 
-  store.gold -= currentPrice.value
-  // Add weapon to inventory (implement in store)
-  store.addWeapon(selectedWeapon.value)
+  if (!selectedWeapon.value || store.player.gold < currentPrice.value) return false
+  // Check if player has room in inventory
+  return store.player.weapons.length < 9
+})
+
+function buyWeapon() {
+  if (!canBuy.value) {
+    // create message modal
+    console.log("You don't have enough room in your inventory.")
+    store.infoMessage = "You don't have enough room in your inventory."
+    return
+  } else {
+    console.log("Buying weapon...")
+  }
+
+  store.player.gold -= currentPrice.value
+  store.player.weapons.push(selectedWeapon.value)
 }
 
 // Add default selection
 selectedWeapon.value = weapons[0]
+
+// Add this computed property
+const displayedWeapons = computed(() => {
+  return tradeMode.value === "buy" ? weapons : store.player.weapons
+})
+
+// Watch for trade mode changes to reset selection
+watch(tradeMode, () => {
+  selectedWeapon.value = displayedWeapons.value[0] || null
+})
+
+function sellWeapon() {
+  console.log("Selling weapon...")
+  store.player.gold += selectedWeapon.value.resale
+  store.player.weapons = store.player.weapons.filter((weapon) => weapon.id !== selectedWeapon.value.id)
+}
 </script>
