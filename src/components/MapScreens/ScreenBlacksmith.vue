@@ -7,7 +7,7 @@
           v-for="weapon in displayedWeapons"
           :key="weapon.id"
           @click="selectedWeapon = weapon"
-          :class="['text-left p-1 ', selectedWeapon?.id === weapon.id ? 'bg-black text-white' : '']"
+          :class="['text-left p-1 ', selectedWeapon?.uid === weapon.uid ? 'bg-black text-white' : '']"
         >
           {{ weapon.name }}
         </button>
@@ -107,13 +107,11 @@ const canBuy = computed(() => {
   // store.player.gold = 1000
   // store.player.weapons = []
 
-  if (!selectedWeapon.value || store.player.gold < currentPrice.value) return false
-  // Check if player has room in inventory
-  return store.player.weapons.length < 9
+  return selectedWeapon.value && store.player.gold >= currentPrice.value
 })
 
 function buyWeapon() {
-  if (!canBuy.value) {
+  if (store.player.weapons.length >= 9) {
     // create message modal
     console.log("You don't have enough room in your inventory.")
     store.infoMessage = "You don't have enough room in your inventory."
@@ -123,7 +121,7 @@ function buyWeapon() {
   }
 
   store.player.gold -= currentPrice.value
-  store.player.weapons.push(selectedWeapon.value)
+  store.addToInventory(selectedWeapon.value, "weapons")
 }
 
 // Add default selection
@@ -142,6 +140,8 @@ watch(tradeMode, () => {
 function sellWeapon() {
   console.log("Selling weapon...")
   store.player.gold += selectedWeapon.value.resale
-  store.player.weapons = store.player.weapons.filter((weapon) => weapon.id !== selectedWeapon.value.id)
+  store.player.weapons = store.player.weapons.filter((weapon) => weapon.uid !== selectedWeapon.value.uid)
+  // select the next weapon
+  selectedWeapon.value = displayedWeapons.value[0]
 }
 </script>

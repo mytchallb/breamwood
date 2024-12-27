@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <ModalItems />
+    <ModalItems v-if="store.inventoryModalOpen" />
     <ModalMessage v-if="store.infoMessage" :message="store.infoMessage" />
     <DialogBox
       v-model="showDialog"
