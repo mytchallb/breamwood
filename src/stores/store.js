@@ -6,13 +6,64 @@ export const useMainStore = defineStore("main", {
     inventoryModalOpen: false,
     isModalOpen: false,
     currentScreen: "map",
+    currentEnemy: null,
     appState: "main",
     newGame: true,
     appOpen: false,
+    enemies: [
+      {
+        id: 1,
+        name: "Goblin",
+        description: "A small, green creature with sharp teeth.",
+        health: 10,
+        hits: 1,
+        damage: 1,
+        agility: 1,
+        defense: 1,
+        criticalHit: 1,
+        reward: 10,
+        image: "/img/enemies/goblin.png",
+      },
+      {
+        id: 2,
+        name: "Hobgoblin",
+        description: "A large, green creature with sharp teeth.",
+        health: 20,
+        hits: 2,
+        damage: 2,
+        agility: 1,
+        defense: 1,
+        criticalHit: 1,
+        reward: 10,
+        image: "/img/enemies/hobgoblin.png",
+      },
+    ],
     merchantItems: {
       weapons: [
-        { id: 1, uid: 1, name: "Iron Sword", description: "A basic sword made of iron.", damage: "1-10", speed: 1.2, weight: 4, price: 100, resale: 50 },
-        { id: 2, uid: 2, name: "Steel Dagger", description: "A sharp dagger made of steel.", damage: "1-6", speed: 1.8, weight: 2, price: 80, resale: 40 },
+        {
+          id: 1,
+          uid: 1,
+          image: "/img/weapons/iron-sword.png",
+          name: "Iron Sword",
+          description: "A basic sword made of iron.",
+          damage: "1-10",
+          speed: 1.2,
+          weight: 4,
+          price: 100,
+          resale: 50,
+        },
+        {
+          id: 2,
+          uid: 2,
+          image: "/img/weapons/steel_dagger.png",
+          name: "Steel Dagger",
+          description: "A sharp dagger made of steel.",
+          damage: "1-6",
+          speed: 1.8,
+          weight: 2,
+          price: 80,
+          resale: 40,
+        },
         {
           id: 3,
           uid: 3,
@@ -150,25 +201,25 @@ export const useMainStore = defineStore("main", {
       items: [],
       weapons: [],
       armor: [],
+      currHealth: 40,
       stats: {
-        health: 10,
-        stamina: 100,
-        sanity: 100,
-        hunger: 100,
+        health: 100,
       },
       skills: {
-        strength: 0, // don't need name or base as everything is hardcoded
+        intelligence: 100,
+        strength: 0,
         agility: 0,
         defense: 0,
         criticalHit: 0,
       },
+      weapons: [],
+      armor: [],
+      items: [],
     },
     _lastUid: 0,
   }),
 
-  getters: {
-    // Add getters here if needed
-  },
+  getters: {},
 
   actions: {
     resetState() {
@@ -202,7 +253,12 @@ export const useMainStore = defineStore("main", {
       this.player[type].push(inventoryItem)
       return inventoryItem
     },
+    setCurrentEnemy(enemy) {
+      this.currentEnemy = enemy
+    },
   },
 
-  persist: true,
+  persist: {
+    pick: ["appState", "newGame", "appOpen", "player.name", "player.classType"],
+  },
 })

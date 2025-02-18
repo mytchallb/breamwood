@@ -9,7 +9,7 @@ export default {
       colors: {
         'gray-light': '#bcbcbc',
         'gray-dark': '#333333',
-        'yellow': '#f0ff08',
+        'yellow': '#ffed01',
       },
       screens: {
         'sm': '640px',

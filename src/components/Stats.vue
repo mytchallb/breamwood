@@ -6,14 +6,14 @@
       <!-- Stats -->
       <template v-if="props.show === 'all' || props.show === 'stats'">
         <div class="space-y-1" v-for="(value, name) in state.player.stats" :key="name">
-          <div class="flex justify-between p-1 bevel-border bg-[#bcbcbc]">
-            <span class="leading-4 capitalize">{{ name }}</span>
-            <span class="leading-4">{{ value }}/100</span>
+          <div class="flex justify-between p-1 bevel-border bg-[#bcbcbc] relative">
+            <div v-if="name === 'health'" class="absolute inset-0" :class="getHealthColor(value)" :style="{ width: `${value}%` }"></div>
+            <span class="leading-4 capitalize relative z-10">{{ name }}</span>
+            <span class="leading-4 relative z-10">{{ value }}/100</span>
           </div>
         </div>
       </template>
-      <hr v-if="props.show !== 'skills'" class="border-[#4c4c4c] border" />
-      <hr v-if="props.show !== 'skills'" class="border-[#4c4c4c] border" />
+
       <!-- Skills -->
       <template v-if="props.show === 'all' || props.show === 'skills'">
         <div class="space-y-1" v-for="(value, name) in state.player.skills" :key="name">
@@ -34,6 +34,7 @@
 <script setup>
 import WindowBar from "./WindowBar.vue"
 import { useMainStore } from "../stores/store"
+import { getHealthColor } from "../lib/methods"
 const state = useMainStore()
 
 const props = defineProps({

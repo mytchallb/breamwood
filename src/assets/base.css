@@ -172,3 +172,13 @@ body {
   -webkit-tap-highlight-color: transparent; /* Remove tap highlight */
   overscroll-behavior: none; /* Prevent pull-to-refresh */
 }
+
+.button {
+  @apply active:bg-black bg-white text-black active:text-white px-4 rounded-md border border-black justify-center;
+}
+.button.feature {
+  @apply outline outline-[3px] outline-offset-1 outline-black;
+}
+.button.disabled {
+  @apply active:bg-black bg-white text-black active:text-white px-4 rounded-md border border-black justify-center active:bg-white text-gray-400 active:!text-gray-400;
+}

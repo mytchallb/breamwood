@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full w-full relative bg-[url('../assets/bg-map.jpg')] bg-no-repeat" style="background-size: 100% 100%">
+  <div class="h-full w-full relative bg-[url('../assets/bg-map2.jpg')] bg-no-repeat bg-center bg-cover">
     <!-- Map Locations -->
     <div
       v-for="location in locations"

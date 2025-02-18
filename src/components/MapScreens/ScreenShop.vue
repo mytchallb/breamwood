@@ -1,64 +1,74 @@
 <template>
-  <div class="relative h-full flex bg-gray-light">
-    <!-- Item list -->
-    <div class="w-full flex flex-col">
-      <div class="flex flex-col h-full bg-white overflow-y-auto m-1 mr-0 bevel-border">
-        <button
-          v-for="item in displayedItems"
-          :key="item.id"
-          @click="selectedItem = item"
-          :class="['text-left p-1 ', selectedItem?.uid === item.uid ? 'bg-black text-white' : '']"
-        >
-          {{ item.name }}
-        </button>
+  <div class="relative h-full flex flex-col bg-gray-light">
+    <!-- Image with flex-shrink-0 to maintain size -->
+    <img :src="shopImages[shopType]" class="bevel-border w-full h-[15vh] flex-shrink-0 object-cover" :alt="`${shopType} shop`" />
+
+    <!-- Content columns - Using flex-1 to take remaining space -->
+    <div class="flex flex-1 min-h-0">
+      <!-- Item list -->
+      <div class="w-full flex flex-col min-h-0">
+        <div class="flex-1 flex flex-col bg-white m-1 mr-0 bevel-border min-h-0 overflow-y-auto">
+          <button
+            v-for="item in displayedItems"
+            :key="item.id"
+            @click="selectedItem = item"
+            :class="['text-left p-1 ', selectedItem?.uid === item.uid ? 'bg-black text-white' : '']"
+          >
+            {{ item.name }}
+          </button>
+        </div>
+        <div class="flex justify-around items-center p-2 flex-shrink-0">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="mode" value="buy" v-model="tradeMode" />
+            Buy
+          </label>
+          <label class="flex items-center gap-2 curs">
+            <input type="radio" name="mode" value="sell" v-model="tradeMode" />
+            Sell
+          </label>
+        </div>
       </div>
-      <div class="flex justify-around items-center p-2">
-        <label class="flex items-center gap-2 cursor-pointer">
-          <input type="radio" name="mode" value="buy" v-model="tradeMode" />
-          Buy
-        </label>
-        <label class="flex items-center gap-2 curs">
-          <input type="radio" name="mode" value="sell" v-model="tradeMode" />
-          Sell
-        </label>
-      </div>
-    </div>
 
-    <!-- Description -->
-    <div class="w-full p-1 flex flex-col">
-      <img :src="shopImages[shopType]" class="bevel-border w-full h-[30%] object-cover" :alt="`${shopType} shop`" />
-
-      <div class="flex gap-2 flex-1">
-        <!-- Item details -->
-        <div class="flex-1 p-1 h-full flex flex-col justify-between">
-          <div class="flex flex-1 flex-col justify-between">
-            <div class="">
-              <h2 class="text-xl tall:mb-1 text-center tall:text-left">{{ selectedItem?.name }}</h2>
-              <p class="tall:block hidden leading-4 mb-2 min-h-[54px]">{{ selectedItem?.description }}</p>
-            </div>
-            <div class="flex flex-col justify-around items-center flex-1">
-              <div class="grid grid-cols-[auto_auto] gap-1 leading-4 min-w-[100px]">
-                <template v-for="(value, key) in itemStats" :key="key">
-                  <span>{{ key }}:</span>
-                  <span>{{ value }}</span>
-                </template>
+      <!-- Description -->
+      <div class="w-full p-1 flex flex-col min-h-0">
+        <div class="flex gap-2 flex-1 min-h-0">
+          <!-- Item details -->
+          <div class="flex-1 p-1 flex flex-col justify-between">
+            <div class="flex flex-1 flex-col justify-between">
+              <div class="relative text-center">
+                <img
+                  :src="selectedItem?.image"
+                  class="absolute bevel-border-reverse -top-10 z-20 left-1/2 -translate-x-1/2 w-12 h-12 object-cover"
+                  alt="Item"
+                />
+                <h2 class="text-xl tall:mb-1 mt-4">{{ selectedItem?.name }}</h2>
+                <p class="tall:block hidden leading-4 mb-2 min-h-[54px]">{{ selectedItem?.description }}</p>
               </div>
+              <div class="flex flex-col justify-around items-center flex-1">
+                <div class="grid grid-cols-[auto_auto] gap-1 leading-4 min-w-[100px]">
+                  <template v-for="(value, key) in itemStats" :key="key">
+                    <span>{{ key }}:</span>
+                    <span>{{ value }}</span>
+                  </template>
+                </div>
 
-              <div class="text-xl flex justify-between gap-2 mb-2 text-center text-yellow">
-                <span class="text-right">{{ tradeMode === "buy" ? selectedItem?.price : (selectedItem?.resale ?? 0) }}</span>
-                <span class="text-left">GOLD</span>
+                <div class="text-xl flex justify-between mb-2 text-center text-yellow">
+                  <img src="@/assets/goldPile.png" class="w-12 h-8 object-contain" />
+                  <span class="min-w-[50px]">{{ tradeMode === "buy" ? selectedItem?.price : (selectedItem?.resale ?? 0) }}</span>
+                  <span class="text-left">GOLD</span>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="flex gap-2 w-full justify-around">
-            <template v-if="tradeMode === 'buy'">
-              <Button text="Haggle" :onClick="haggle" :disabled="!canHaggle" />
-              <Button text="Buy" :onClick="buyItem" :disabled="!canBuy" :highlight="true" />
-            </template>
-            <template v-else>
-              <Button text="Sell" :onClick="sellItem" :disabled="!selectedItem" :highlight="true" />
-            </template>
+            <div class="flex gap-2 w-full justify-around">
+              <template v-if="tradeMode === 'buy'">
+                <!-- <Button text="Haggle" :onClick="haggle" :disabled="!canHaggle" /> -->
+                <Button text="Buy" :onClick="buyItem" :disabled="!canBuy" :highlight="true" />
+              </template>
+              <template v-else>
+                <Button text="Sell" :onClick="sellItem" :disabled="!selectedItem" :highlight="true" />
+              </template>
+            </div>
           </div>
         </div>
       </div>

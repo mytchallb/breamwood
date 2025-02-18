@@ -30,8 +30,7 @@
         </template>
 
         <template v-if="stage === 1">
-          <p class="leading-4 mb-3">Welcome {{ state.playerName }}!</p>
-          <p class="leading-4">Roll the dice to choose your stats, for a combined total of 18.</p>
+          <p class="leading-4">Roll the dice to choose your stats.</p>
           <Stats class="mt-4" :showWindowBar="false" :show="'skills'" :showClassBuffs="true" />
 
           <div class="flex gap-4 mt-6 justify-end">
@@ -53,7 +52,7 @@
               @click="nextStage"
               class="active:bg-black bg-white active:text-white px-4 rounded-md border border-black min-w-[70px] h-[26px] flex items-center outline outline-[3px] outline-offset-1 outline-black justify-center"
             >
-              OK
+              START
             </button>
           </div>
         </template>
@@ -73,6 +72,7 @@ const state = useMainStore()
 
 const formatClassName = (classInfo) => {
   const statAbbreviations = {
+    intelligence: "INT",
     strength: "STR",
     agility: "AGI",
     defense: "DEF",
@@ -120,27 +120,13 @@ const applyClassBuffs = () => {
   }
 }
 
-const getRandomStat = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
-
 const rollStats = () => {
-  function generateStats() {
-    const first = Math.floor(Math.random() * 8) + 1 // 1-8
-    const second = Math.floor(Math.random() * (9 - first)) + 1 // 1-(9-first)
-    const third = 18 - first - second
-
-    if (third >= 1 && third <= 10) {
-      return [first, second, third]
-    }
-    return generateStats()
-  }
-
-  const [strength, agility, defense] = generateStats()
-
   state.player.skills = {
-    strength,
-    agility,
-    defense,
-    criticalHit: getRandomStat(1, 3),
+    criticalHit: Math.floor(Math.random() * 3) + 1,
+    strength: Math.floor(Math.random() * 10) + 1,
+    defense: Math.floor(Math.random() * 10) + 1,
+    agility: Math.floor(Math.random() * 10) + 1,
+    intelligence: Math.floor(Math.random() * 10) + 1,
   }
 }
 
