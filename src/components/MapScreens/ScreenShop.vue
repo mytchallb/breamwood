@@ -22,8 +22,8 @@
             <input type="radio" name="mode" value="buy" v-model="tradeMode" />
             Buy
           </label>
-          <label class="flex items-center gap-2 curs">
-            <input type="radio" name="mode" value="sell" v-model="tradeMode" />
+          <label class="flex items-center gap-2" :class="{ 'cursor-pointer': hasInventoryItems, 'opacity-60 cursor-not-allowed': !hasInventoryItems }">
+            <input type="radio" name="mode" value="sell" v-model="tradeMode" :disabled="!hasInventoryItems" />
             Sell
           </label>
         </div>
@@ -41,19 +41,21 @@
                   class="absolute bevel-border-reverse -top-10 z-20 left-1/2 -translate-x-1/2 w-12 h-12 object-cover"
                   alt="Item"
                 />
-                <h2 class="text-xl tall:mb-1 mt-4">{{ selectedItem?.name }}</h2>
-                <p class="tall:block hidden leading-4 mb-2 min-h-[54px]">{{ selectedItem?.description }}</p>
+                <h2 class="text-xl tall:mb-1 mt-4 normal-line-height">{{ selectedItem?.name }}</h2>
+                <p class="tall:block hidden leading-4 min-h-[54px]">{{ selectedItem?.description }}</p>
               </div>
               <div class="flex flex-col justify-around items-center flex-1">
-                <div class="grid grid-cols-[auto_auto] gap-1 leading-4 min-w-[100px]">
+                <div class="grid grid-cols-[auto_auto] gap-1 my-2 leading-4 min-w-[100px] w-full">
                   <template v-for="(value, key) in itemStats" :key="key">
-                    <span>{{ key }}:</span>
-                    <span>{{ value }}</span>
+                    <div class="flex justify-between p-1 bevel-border bg-[#bcbcbc] col-span-2">
+                      <span class="leading-4 capitalize">{{ key }}</span>
+                      <span class="leading-4">{{ value }}</span>
+                    </div>
                   </template>
                 </div>
 
                 <div class="text-xl flex justify-between mb-2 text-center text-yellow">
-                  <img src="@/assets/goldPile.png" class="w-12 h-8 object-contain" />
+                  <img src="@/assets/goldPile.png" class="w-12 h-6 object-contain" />
                   <span class="min-w-[50px]">{{ tradeMode === "buy" ? selectedItem?.price : (selectedItem?.resale ?? 0) }}</span>
                   <span class="text-left">GOLD</span>
                 </div>
@@ -61,13 +63,9 @@
             </div>
 
             <div class="flex gap-2 w-full justify-around">
-              <template v-if="tradeMode === 'buy'">
-                <!-- <Button text="Haggle" :onClick="haggle" :disabled="!canHaggle" /> -->
-                <Button text="Buy" :onClick="buyItem" :disabled="!canBuy" :highlight="true" />
-              </template>
-              <template v-else>
-                <Button text="Sell" :onClick="sellItem" :disabled="!selectedItem" :highlight="true" />
-              </template>
+              <Button v-if="tradeMode === 'buy'" text="Buy" :onClick="buyItem" :disabled="!canBuy" :highlight="true" />
+              <Button v-else text="Sell" :onClick="sellItem" :disabled="!selectedItem" :highlight="true" />
+              <Button text="Map" :onClick="() => store.setCurrentScreen('map')" />
             </div>
           </div>
         </div>
@@ -208,6 +206,11 @@ function sellItem() {
 
   syncInventory()
   selectedItem.value = displayedItems.value[0] || null
+
+  // if that was the last item then switch to buy mode
+  if (inventory.value.length === 0) {
+    tradeMode.value = "buy"
+  }
 }
 
 // Add inventory sync function
@@ -223,5 +226,9 @@ onMounted(() => {
   console.log("Initializing shop:", props.shopType)
   syncInventory()
   selectedItem.value = displayedItems.value[0] || null
+})
+
+const hasInventoryItems = computed(() => {
+  return store.player[props.shopType]?.length > 0
 })
 </script>

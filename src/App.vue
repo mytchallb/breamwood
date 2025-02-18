@@ -5,7 +5,7 @@
 
     <div
       v-if="!store.newGame"
-      class="max-w-[600px] grid grid-rows-[auto_1fr_auto] gap-1 p-1 mx-auto w-full justify-self-center"
+      class="max-w-[470px] grid grid-rows-[auto_1fr_auto] gap-1 p-1 mx-auto w-full justify-self-center"
       style="height: calc(100dvh - 23px); max-height: 760px"
     >
       <Stats />

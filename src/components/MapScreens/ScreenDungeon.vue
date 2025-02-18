@@ -1,10 +1,14 @@
 <template>
   <div class="relative h-full w-full">
+    <!-- BG Image -->
     <div class="h-full w-full absolute bg-[url('../assets/bg-dungeon.jpg')] bg-center bg-cover bg-no-repeat"></div>
-    <div class="relative z-10 p-8">
-      <h1 class="text-white text-xl font-bold text-center mb-6">Welcome to the Dungeon</h1>
-      <div class="container mx-auto">
+    <!-- Overlay -->
+    <div class="relative z-10 p-8 pb-2 h-full flex flex-col items-center justify-between w-full">
+      <p class="text-white text-lg font-bold text-center mb-6">An uneasy feeling washes over you...</p>
+      <div class="flex gap-8">
         <!-- Content can go here -->
+        <Button text="Enter" :highlight="true" :onClick="enterDungeon" />
+        <Button text="Map" :onClick="() => store.setCurrentScreen('map')" />
       </div>
     </div>
   </div>
@@ -12,6 +16,15 @@
 
 <script setup>
 import { useMainStore } from "../../stores/store"
+import Button from "../Button.vue"
 
 const store = useMainStore()
+
+const enterDungeon = () => {
+  if (store.player.level < 10) {
+    store.infoMessage = "You need to be level 20 to enter the dungeon."
+  } else {
+    console.log("Entering dungeon")
+  }
+}
 </script>

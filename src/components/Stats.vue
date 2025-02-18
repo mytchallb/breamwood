@@ -6,10 +6,9 @@
       <!-- Stats -->
       <template v-if="props.show === 'all' || props.show === 'stats'">
         <div class="space-y-1" v-for="(value, name) in state.player.stats" :key="name">
-          <div class="flex justify-between p-1 bevel-border bg-[#bcbcbc] relative">
-            <div v-if="name === 'health'" class="absolute inset-0" :class="getHealthColor(value)" :style="{ width: `${value}%` }"></div>
-            <span class="leading-4 capitalize relative z-10">{{ name }}</span>
-            <span class="leading-4 relative z-10">{{ value }}/100</span>
+          <div class="flex justify-between p-1 bevel-border bg-[#bcbcbc]">
+            <span class="leading-4 capitalize">{{ name }}</span>
+            <span class="leading-4" :style="name === 'health' ? { color: getHealthColor(value) } : {}">{{ value }}/100</span>
           </div>
         </div>
       </template>

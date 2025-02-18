@@ -1,7 +1,7 @@
 <template>
   <button
     @click="!props.disabled && props.onClick()"
-    class="active:bg-black bg-white text-black active:text-white px-4 rounded-md border border-black justify-center"
+    class="active:bg-black bg-white text-black active:text-white py-1 px-4 rounded-md border border-black justify-center normal-line-height"
     :disabled="props.disabled"
     :class="[
       { 'outline outline-[3px] outline-offset-1 outline-black': props.highlight },

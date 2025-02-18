@@ -4,7 +4,6 @@
     <div class="flex-1 h-full overflow-hidden">
       <component :is="screenComponents[store.currentScreen].component" class="h-full" />
     </div>
-    <button v-if="screenComponents[store.currentScreen].showBackBar" @click="store.setCurrentScreen('map')" class="bevel-pressed">< Back to Map</button>
   </div>
 </template>
 
@@ -24,39 +23,30 @@ const store = useMainStore()
 const screenComponents = {
   map: {
     component: ScreenMap,
-    showBackBar: false,
   },
   ScreenMarket: {
     component: h(ScreenShop, { shopType: "items" }),
-    showBackBar: true,
   },
   ScreenBlacksmith: {
     component: h(ScreenShop, { shopType: "weapons" }),
-    showBackBar: true,
   },
   ScreenArmor: {
     component: h(ScreenShop, { shopType: "armor" }),
-    showBackBar: true,
   },
   ScreenInn: {
     component: ScreenInn,
-    showBackBar: true,
   },
   ScreenArena: {
     component: ScreenArena,
-    showBackBar: true,
   },
   ScreenArenaFight: {
     component: ScreenArenaFight,
-    showBackBar: false,
   },
   ScreenDungeon: {
     component: ScreenDungeon,
-    showBackBar: true,
   },
   ScreenCastle: {
     component: ScreenCastle,
-    showBackBar: true,
   },
 }
 

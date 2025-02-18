@@ -13,7 +13,7 @@ export function toggleInventory() {
 }
 
 export const getHealthColor = (percentage) => {
-  if (percentage <= 25) return "bg-[#c14343]"
-  if (percentage <= 50) return "bg-[#e49f28]"
-  return "bg-[#109a41]"
+  if (percentage <= 25) return "#c14343"
+  if (percentage <= 50) return "#c57d00"
+  return "#006a26"
 }

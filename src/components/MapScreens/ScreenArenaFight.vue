@@ -8,37 +8,36 @@
         <div class="flex gap-2 flex-1">
           <!-- Enemy details -->
           <div class="p-1 flex flex-col justify-between w-full">
-            <div class="flex justify-between gap-4 w-full bevel-border p-2">
+            <div class="flex justify-between gap-2 w-full">
               <!-- Enemy image and name -->
-              <div class="flex h-full flex-col items-center">
-                <h2 class="text-xl mt-1">{{ selectedEnemy?.name }}</h2>
-                <img :src="selectedEnemy?.image" class="bevel-border-reverse w-20 h-20 object-cover" alt="Enemy" v-if="selectedEnemy?.image" />
+              <div class="aspect-square h-full w-1/3 py-1">
+                <img :src="selectedEnemy?.image" class="bevel-border-reverse w-full h-full object-cover" alt="Enemy" v-if="selectedEnemy?.image" />
               </div>
 
               <!-- Enemy stats -->
-              <div class="p-1 space-y-1 flex-1">
+              <div class="p-1 space-y-1 flex-1 w-2/3">
                 <div class="flex justify-between p-1 bevel-border bg-[#bcbcbc] relative">
-                  <div class="absolute inset-0" :class="getHealthColor(healthPercentage)" :style="{ width: `${healthPercentage}%` }"></div>
+                  <div class="absolute inset-0"></div>
                   <span class="leading-4 capitalize relative z-10">Health</span>
-                  <span class="leading-4 relative z-10">{{ enemyHealth }}/{{ selectedEnemy?.health }}</span>
+                  <span class="leading-4 relative z-10" :style="{ color: getHealthColor(healthPercentage) }"
+                    >{{ enemyHealth }}/{{ selectedEnemy?.health }}</span
+                  >
                 </div>
                 <div class="flex justify-between p-1 bevel-border bg-[#bcbcbc]">
-                  <span class="leading-4 capitalize">Armour</span>
+                  <span class="leading-4 capitalize">Defense</span>
                   <span class="leading-4">{{ selectedEnemy?.defense }}</span>
                 </div>
                 <div class="flex justify-between p-1 bevel-border bg-[#bcbcbc]">
-                  <span class="leading-4 capitalize">Multi-hit</span>
-                  <span class="leading-4">{{ selectedEnemy?.hits }}</span>
-                </div>
-                <div class="flex justify-between p-1 bevel-border bg-[#bcbcbc]">
-                  <span class="leading-4 capitalize">Damage</span>
-                  <span class="leading-4">{{ selectedEnemy?.damage }}</span>
+                  <span class="leading-4 capitalize">Attack</span>
+                  <span class="leading-4"
+                    >{{ selectedEnemy?.damage }} <span v-if="selectedEnemy?.hits > 1 || 1 == 1">({{ selectedEnemy?.hits }}x)</span></span
+                  >
                 </div>
               </div>
             </div>
 
             <!-- Message -->
-            <div class="flex flex-1 flex-col py-4">
+            <div class="flex flex-1 flex-col py-2">
               <p class="normal-line-height mb-2">Messages</p>
               <div class="p-1 bevel-border flex-1">
                 <ul class="overflow-y-auto h-20">
