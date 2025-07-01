@@ -22,8 +22,8 @@
             <input type="radio" name="mode" value="buy" v-model="tradeMode" />
             Buy
           </label>
-          <label class="flex items-center gap-2" :class="{ 'cursor-pointer': hasInventoryItems, 'opacity-60 cursor-not-allowed': !hasInventoryItems }">
-            <input type="radio" name="mode" value="sell" v-model="tradeMode" :disabled="!hasInventoryItems" />
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="mode" value="sell" v-model="tradeMode" />
             Sell
           </label>
         </div>
@@ -37,7 +37,7 @@
             <div class="flex flex-1 flex-col justify-between">
               <div class="relative text-center">
                 <img
-                  :src="selectedItem?.image"
+                  :src="selectedItem?.image || defaultItemImage"
                   class="absolute bevel-border-reverse -top-10 z-20 left-1/2 -translate-x-1/2 w-12 h-12 object-cover"
                   alt="Item"
                 />
@@ -63,7 +63,7 @@
             </div>
 
             <div class="flex gap-2 w-full justify-around">
-              <Button v-if="tradeMode === 'buy'" text="Buy" :onClick="buyItem" :disabled="!canBuy" :highlight="true" />
+              <Button v-if="tradeMode === 'buy'" text="Buy" :onClick="buyItem" :highlight="true" />
               <Button v-else text="Sell" :onClick="sellItem" :disabled="!selectedItem" :highlight="true" />
               <Button text="Map" :onClick="() => store.setCurrentScreen('map')" />
             </div>
@@ -103,6 +103,8 @@ const shopImages = {
   armor: new URL("@/assets/bg-armour.jpg", import.meta.url).href,
   items: new URL("@/assets/bg-market.jpg", import.meta.url).href,
 }
+
+const defaultItemImage = new URL("@/assets/iconItemDefault.jpg", import.meta.url).href
 
 // Dynamic stats based on item type
 const itemStats = computed(() => {
@@ -168,6 +170,11 @@ const canBuy = computed(() => {
 })
 
 function buyItem() {
+  if (!canBuy.value) {
+    store.infoMessage = "Not enough gold!"
+    return
+  }
+
   if (!selectedItem.value) {
     store.infoMessage = "Please select an item first."
     return
@@ -186,6 +193,8 @@ function buyItem() {
   store.player.gold -= currentPrice.value
   store.addToInventory(selectedItem.value, props.shopType)
   syncInventory()
+
+  store.infoMessage = `The ${selectedItem.value.name} has been added to your inventory.`
 }
 
 // Watch for trade mode changes to reset selection
@@ -205,12 +214,14 @@ function sellItem() {
   store.player[props.shopType] = inventory.value.filter((item) => item.uid !== selectedItem.value.uid)
 
   syncInventory()
+  store.infoMessage = `You part with your ${selectedItem.value.name} for ${resalePrice} gold.`
+
   selectedItem.value = displayedItems.value[0] || null
 
   // if that was the last item then switch to buy mode
-  if (inventory.value.length === 0) {
-    tradeMode.value = "buy"
-  }
+  // if (inventory.value.length === 0) {
+  //   tradeMode.value = "buy"
+  // }
 }
 
 // Add inventory sync function

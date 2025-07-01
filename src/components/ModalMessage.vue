@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
+  <div class="fixed inset-0 bg-opacity-50 z-40"></div>
   <div class="dialog-box fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 w-80 z-50">
     <p class="leading-4">{{ message }}</p>
     <div class="flex justify-around mt-8">

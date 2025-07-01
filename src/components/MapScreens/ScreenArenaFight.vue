@@ -2,12 +2,12 @@
   <div class="relative h-full flex flex-col bg-gray-light">
     <!-- Arena image moved to top -->
 
-    <div class="flex flex-1">
+    <div class="flex flex-1 h-full">
       <!-- Description -->
       <div class="w-full p-1 flex flex-col">
-        <div class="flex gap-2 flex-1">
+        <div class="flex gap-2 flex-1 h-full">
           <!-- Enemy details -->
-          <div class="p-1 flex flex-col justify-between w-full">
+          <div class="p-1 flex flex-col justify-between w-full h-full overflow-hidden">
             <div class="flex justify-between gap-2 w-full">
               <!-- Enemy image and name -->
               <div class="aspect-square h-full w-1/3 py-1">
@@ -37,10 +37,10 @@
             </div>
 
             <!-- Message -->
-            <div class="flex flex-1 flex-col py-2">
+            <div class="flex flex-1 flex-col py-2 select-text min-h-0 overflow-hidden">
               <p class="normal-line-height mb-2">Messages</p>
-              <div class="p-1 bevel-border flex-1">
-                <ul class="overflow-y-auto h-20">
+              <div class="p-1 bevel-border flex-1 overflow-y-auto" ref="msgLogContainer">
+                <ul class="h-full">
                   <li class="leading-tight" v-for="msg in msgLog" :key="msg">{{ msg }}</li>
                 </ul>
               </div>
@@ -48,9 +48,9 @@
 
             <!-- Action buttons -->
             <div class="flex gap-2 w-full justify-around">
-              <Button text="Attack" :highlight="true" @click="fight" />
-              <Button text="Defend" @click="defend" />
-              <Button text="Run" @click="run" />
+              <Button text="Attack" :highlight="true" @click="fight" :disabled="buttonsDisabled" />
+              <Button text="Defend" @click="defend" :disabled="buttonsDisabled" />
+              <Button text="Run" @click="run" :disabled="buttonsDisabled" />
             </div>
           </div>
         </div>
@@ -68,6 +68,8 @@ const store = useMainStore()
 const selectedEnemy = ref(null)
 const enemyHealth = ref()
 const msgLog = ref([])
+const msgLogContainer = ref(null)
+const buttonsDisabled = ref(false)
 
 // ATTACK LOGIC
 
@@ -104,7 +106,7 @@ const fight = () => {
   }
 
   // Calculate damage
-  const damage = Math.floor(Math.random() * (store.player.damage - selectedEnemy.value.defense)) + 1
+  const damage = Math.floor(Math.random() * (store.player.damage - selectedEnemy.value.defense)) + 1 || 0
   addMessage("You hit the " + selectedEnemy.value.name + " for " + damage + " damage!")
 
   // Subtract damage from enemy health
@@ -120,10 +122,21 @@ const fight = () => {
 }
 
 const run = () => {
-  addMessage("You run away")
+  buttonsDisabled.value = true
+
+  // Forfeit up to 60% of the prize (minimum 1)
+  let forfeitAmount = Math.max(1, Math.floor(Math.random() * (selectedEnemy.value.reward * 0.6)))
+  forfeitAmount = Math.min(forfeitAmount, store.player.gold)
+  if (forfeitAmount > 0) {
+    store.player.gold -= forfeitAmount
+    store.infoMessage = "You run away from the " + selectedEnemy.value.name + " and forfeit " + forfeitAmount + " gold!"
+  } else {
+    store.infoMessage = "You run away from the " + selectedEnemy.value.name + "!"
+  }
+
   setTimeout(() => {
     store.setCurrentScreen("ScreenArena")
-  }, 800)
+  }, 1500)
 }
 
 const defend = () => {
@@ -139,6 +152,10 @@ onMounted(() => {
 
 const addMessage = (message) => {
   msgLog.value.push(message)
+  // Scroll the log to the bottom
+  setTimeout(() => {
+    msgLogContainer.value.scrollTop = msgLogContainer.value.scrollHeight
+  }, 1)
 }
 
 const healthPercentage = computed(() => {

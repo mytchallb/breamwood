@@ -1,11 +1,12 @@
 <template>
   <!-- Menu Bar -->
-  <div class="bg-white border-b border-t border-black flex text-sm h-5 z-50" ref="menuWrapper">
+  <div class="bg-white border-b border-t border-black flex h-5 z-50" ref="menuWrapper">
     <div v-for="(menu, menuIndex) in menuItems" :key="menuIndex" class="relative">
       <div
         class="px-2 h-full flex items-center cursor-default select-none"
         :class="{ 'bg-black text-white': menu.dropdownOpen }"
-        @click="toggleDropdown(menuIndex)"
+        @mousedown="toggleDropdown(menuIndex)"
+        @mouseenter="$event.buttons > 0 && toggleDropdown(menuIndex)"
       >
         <img v-if="!menu.name" src="../assets/apple.png" alt="Apple" class="w-3 h-3 object-contain" />
         <span v-else>{{ menu.name }}</span>
@@ -25,7 +26,7 @@
     </div>
     <!-- time -->
     <div class="pr-2 h-full flex flex-1 items-center justify-end">
-      <span class="text-xs">{{ currentTime }}</span>
+      <span class="">{{ currentTime }}</span>
     </div>
   </div>
 </template>
@@ -91,6 +92,11 @@ const currentTime = ref("12:00")
 onMounted(() => {
   updateTime() // Initial update
   setInterval(updateTime, 1000) // Update every second
+
+  // Add global mouseup listener
+  document.addEventListener("mouseup", () => {
+    menuItems.value.forEach((item) => (item.dropdownOpen = false))
+  })
 })
 
 function updateTime() {

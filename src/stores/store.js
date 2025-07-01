@@ -35,7 +35,7 @@ export const useMainStore = defineStore("main", {
         defense: 1,
         criticalHit: 1,
         reward: 10,
-        image: "/img/enemies/hobgoblin.png",
+        image: "/img/enemies/goblin.png",
       },
     ],
     merchantItems: {
@@ -55,7 +55,7 @@ export const useMainStore = defineStore("main", {
         {
           id: 2,
           uid: 2,
-          image: "/img/weapons/steel_dagger.png",
+          image: "",
           name: "Steel Dagger",
           description: "A sharp dagger made of steel.",
           damage: "1-6",
