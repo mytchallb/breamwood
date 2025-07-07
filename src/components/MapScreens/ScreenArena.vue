@@ -70,6 +70,7 @@
 <script setup>
 import { ref, computed, watch, onMounted } from "vue"
 import { useMainStore } from "../../stores/store"
+import { showModalMessage } from "../../lib/methods"
 import Button from "../Button.vue"
 
 const store = useMainStore()
@@ -78,7 +79,7 @@ const selectedEnemy = ref(null)
 // Fight function (you'll need to implement the combat logic)
 const fight = () => {
   if (!selectedEnemy.value) {
-    store.infoMessage = "Please select an enemy to fight"
+    showModalMessage("Please select an enemy to fight")
     return
   }
 

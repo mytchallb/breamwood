@@ -63,7 +63,7 @@
 import { ref, computed, watch, onMounted } from "vue"
 import { useMainStore } from "../../stores/store"
 import Button from "../Button.vue"
-import { getHealthColor } from "../../lib/methods"
+import { getHealthColor, showModalMessage } from "../../lib/methods"
 const store = useMainStore()
 const selectedEnemy = ref(null)
 const enemyHealth = ref()
@@ -95,29 +95,73 @@ const fight = () => {
   console.log("Fighting:", store.currentEnemy.name)
 
   // See who attacks first based on agility with 20% chance to override
-  const playerAgility = store.player.agility
+  const playerAgility = store.player.skills.agility
   const enemyAgility = selectedEnemy.value.agility
   const luckyRoll = Math.random() < 0.2 // 20% chance
 
-  if (playerAgility > enemyAgility || (playerAgility <= enemyAgility && luckyRoll)) {
+  const playerAttackFirst = playerAgility > enemyAgility || luckyRoll > 0.5
+
+  const playerMiss = Math.random() < 0.2 // 20% chance
+  const enemyMiss = Math.random() < 0.25 // 25% chance
+
+  if (playerAttackFirst) {
     addMessage("You attack first!")
+    if (!playerMiss) {
+      playerAttack()
+    } else {
+      addMessage("You miss!")
+    }
+    if (enemyHealth.value > 0) {
+      if (!enemyMiss) {
+        enemyAttack()
+      } else {
+        addMessage("The " + selectedEnemy.value.name + " misses!")
+      }
+    }
   } else {
-    addMessage("The " + selectedEnemy.value.name + " attacks first!")
+    if (!enemyMiss) {
+      enemyAttack()
+    } else {
+      addMessage("The " + selectedEnemy.value.name + " misses!")
+    }
+    if (!playerMiss) {
+      playerAttack()
+    } else {
+      addMessage("You miss!")
+    }
   }
 
+  // end turn
+}
+
+const playerAttack = () => {
   // Calculate damage
-  const damage = Math.floor(Math.random() * (store.player.damage - selectedEnemy.value.defense)) + 1 || 0
+  const damage = Math.floor(Math.random() * (store.player.skills.strength - selectedEnemy.value.defense)) + 1 || 0
   addMessage("You hit the " + selectedEnemy.value.name + " for " + damage + " damage!")
 
-  // Subtract damage from enemy health
-  enemyHealth.value -= damage
+  // Subtract damage from enemy health, capping at 0
+  enemyHealth.value = Math.max(enemyHealth.value - damage, 0)
 
   // Check if enemy is dead
   if (enemyHealth.value <= 0) {
-    addMessage("You defeat the " + selectedEnemy.value.name + "!")
-    setTimeout(() => {
+    showModalMessage("You defeat the " + selectedEnemy.value.name + " and win " + selectedEnemy.value.reward + " gold!", () => {
+      store.player.gold += selectedEnemy.value.reward
       store.setCurrentScreen("ScreenArena")
-    }, 800)
+    })
+  }
+}
+
+const enemyAttack = () => {
+  const damage = Math.floor(Math.random() * (selectedEnemy.value.damage - store.player.skills.defense)) + 1 || 0
+  addMessage("The " + selectedEnemy.value.name + " hits you for " + damage + " damage!")
+
+  // Subtract damage from player health, capping at 0
+  store.player.currentHealth = Math.max(store.player.currentHealth - damage, 0)
+
+  // Check if player is dead
+  if (store.player.currentHealth <= 0) {
+    showModalMessage("You have been defeated by the " + selectedEnemy.value.name + "!")
+    store.setCurrentScreen("ScreenArena")
   }
 }
 
@@ -127,16 +171,15 @@ const run = () => {
   // Forfeit up to 60% of the prize (minimum 1)
   let forfeitAmount = Math.max(1, Math.floor(Math.random() * (selectedEnemy.value.reward * 0.6)))
   forfeitAmount = Math.min(forfeitAmount, store.player.gold)
+  let msg = "You run away from the " + selectedEnemy.value.name + "!"
   if (forfeitAmount > 0) {
     store.player.gold -= forfeitAmount
-    store.infoMessage = "You run away from the " + selectedEnemy.value.name + " and forfeit " + forfeitAmount + " gold!"
-  } else {
-    store.infoMessage = "You run away from the " + selectedEnemy.value.name + "!"
+    msg = " You run away and forfeit " + forfeitAmount + " gold!"
   }
 
-  setTimeout(() => {
+  showModalMessage(msg, () => {
     store.setCurrentScreen("ScreenArena")
-  }, 1500)
+  })
 }
 
 const defend = () => {

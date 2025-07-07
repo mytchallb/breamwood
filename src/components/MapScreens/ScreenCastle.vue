@@ -17,12 +17,13 @@
 <script setup>
 import { useMainStore } from "../../stores/store"
 import Button from "../Button.vue"
+import { showModalMessage } from "../../lib/methods"
 
 const store = useMainStore()
 
 const enterCastle = () => {
   if (store.player.level < 10) {
-    store.infoMessage = "You need to be level 10 to see the king."
+    showModalMessage("You need to be level 10 to see the king.")
   } else {
     console.log("Enter castle")
     // store.setCurrentScreen("map")

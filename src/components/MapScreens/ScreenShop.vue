@@ -78,6 +78,7 @@
 import { ref, computed, watch, onMounted } from "vue"
 import { useMainStore } from "../../stores/store"
 import Button from "../Button.vue"
+import { showModalMessage } from "../../lib/methods"
 
 const props = defineProps({
   shopType: {
@@ -170,23 +171,25 @@ const canBuy = computed(() => {
 })
 
 function buyItem() {
+  let errorMsg = ""
   if (!canBuy.value) {
-    store.infoMessage = "Not enough gold!"
-    return
+    errorMsg = "Not enough gold!"
   }
 
   if (!selectedItem.value) {
-    store.infoMessage = "Please select an item first."
-    return
+    errorMsg = "Please select an item first."
   }
 
   if (!store.player.gold || store.player.gold < currentPrice.value) {
-    store.infoMessage = "Not enough gold!"
-    return
+    errorMsg = "Not enough gold!"
   }
 
   if (inventory.value.length >= 9) {
-    store.infoMessage = "You don't have enough room in your inventory."
+    errorMsg = "You don't have enough room in your inventory."
+  }
+
+  if (errorMsg) {
+    showModalMessage(errorMsg)
     return
   }
 
@@ -194,7 +197,7 @@ function buyItem() {
   store.addToInventory(selectedItem.value, props.shopType)
   syncInventory()
 
-  store.infoMessage = `The ${selectedItem.value.name} has been added to your inventory.`
+  showModalMessage(`The ${selectedItem.value.name} has been added to your inventory.`)
 }
 
 // Watch for trade mode changes to reset selection
@@ -205,7 +208,7 @@ watch(tradeMode, () => {
 
 function sellItem() {
   if (!selectedItem.value) {
-    store.infoMessage = "Please select an item first."
+    showModalMessage("Please select an item first.")
     return
   }
 
@@ -214,7 +217,7 @@ function sellItem() {
   store.player[props.shopType] = inventory.value.filter((item) => item.uid !== selectedItem.value.uid)
 
   syncInventory()
-  store.infoMessage = `You part with your ${selectedItem.value.name} for ${resalePrice} gold.`
+  showModalMessage(`You part with your ${selectedItem.value.name} for ${resalePrice} gold.`)
 
   selectedItem.value = displayedItems.value[0] || null
 

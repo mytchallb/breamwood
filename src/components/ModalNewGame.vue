@@ -122,6 +122,7 @@ const applyClassBuffs = () => {
 
 const rollStats = () => {
   state.player.skills = {
+    health: 100,
     criticalHit: Math.floor(Math.random() * 3) + 1,
     strength: Math.floor(Math.random() * 10) + 1,
     defense: Math.floor(Math.random() * 10) + 1,

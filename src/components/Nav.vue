@@ -5,8 +5,7 @@
       <div
         class="px-2 h-full flex items-center cursor-default select-none"
         :class="{ 'bg-black text-white': menu.dropdownOpen }"
-        @mousedown="toggleDropdown(menuIndex)"
-        @mouseenter="$event.buttons > 0 && toggleDropdown(menuIndex)"
+        @click="toggleDropdown(menuIndex)"
       >
         <img v-if="!menu.name" src="../assets/apple.png" alt="Apple" class="w-3 h-3 object-contain" />
         <span v-else>{{ menu.name }}</span>
@@ -35,6 +34,7 @@
 import { ref, onMounted } from "vue"
 import { onClickOutside } from "@vueuse/core"
 import { useMainStore } from "../stores/store"
+import { showModalMessage } from "../lib/methods"
 
 const store = useMainStore()
 
@@ -78,11 +78,17 @@ function toggleDropdown(index) {
 }
 
 function handleMenuAction(item) {
+  console.log("handleMenuAction", item)
   if (item === "Quit") {
     store.resetState()
     store.setCurrentScreen("map")
     store.setAppState("main")
   }
+
+  if (item === "Credits") {
+    showModalMessage("Made by Mytchall Bransgrove in 2025. See the open-source code at github.com.")
+  }
+
   console.log(`Menu action: ${item}`)
   menuItems.value.forEach((item) => (item.dropdownOpen = false))
 }
@@ -92,11 +98,6 @@ const currentTime = ref("12:00")
 onMounted(() => {
   updateTime() // Initial update
   setInterval(updateTime, 1000) // Update every second
-
-  // Add global mouseup listener
-  document.addEventListener("mouseup", () => {
-    menuItems.value.forEach((item) => (item.dropdownOpen = false))
-  })
 })
 
 function updateTime() {

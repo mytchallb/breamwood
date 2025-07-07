@@ -17,3 +17,9 @@ export const getHealthColor = (percentage) => {
   if (percentage <= 50) return "#c57d00"
   return "#006a26"
 }
+
+export const showModalMessage = (message, callback = null) => {
+  const store = useMainStore()
+  store.infoMessage = message
+  store.infoMessageCallback = callback
+}

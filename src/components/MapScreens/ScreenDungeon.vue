@@ -17,12 +17,13 @@
 <script setup>
 import { useMainStore } from "../../stores/store"
 import Button from "../Button.vue"
+import { showModalMessage } from "../../lib/methods"
 
 const store = useMainStore()
 
 const enterDungeon = () => {
   if (store.player.level < 10) {
-    store.infoMessage = "You need to be level 20 to enter the dungeon."
+    showModalMessage("You need to be level 20 to enter the dungeon.")
   } else {
     console.log("Entering dungeon")
   }

@@ -3,16 +3,6 @@
     <WindowBar title="Stats" v-if="props.showWindowBar" />
     <!-- Stats Container -->
     <div class="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-1 p-1">
-      <!-- Stats -->
-      <template v-if="props.show === 'all' || props.show === 'stats'">
-        <div class="space-y-1" v-for="(value, name) in state.player.stats" :key="name">
-          <div class="flex justify-between p-1 bevel-border bg-[#bcbcbc]">
-            <span class="leading-4 capitalize">{{ name }}</span>
-            <span class="leading-4" :style="name === 'health' ? { color: getHealthColor(value) } : {}">{{ value }}/100</span>
-          </div>
-        </div>
-      </template>
-
       <!-- Skills -->
       <template v-if="props.show === 'all' || props.show === 'skills'">
         <div class="space-y-1" v-for="(value, name) in state.player.skills" :key="name">
@@ -20,7 +10,8 @@
             <span class="leading-4 capitalize">{{ name }}</span>
             <div class="flex items-center leading-4">
               <span v-if="showClassBuffs && getClassBuff(name)" class="text-green-700 mr-2">(+{{ getClassBuff(name) }})</span>
-              <span>{{ value }}</span>
+              <span v-if="name === 'health'" :style="{ color: getHealthColor(getHealthPercentage()) }"> {{ state.player.currentHealth }}/{{ value }} </span>
+              <span v-else>{{ value }}</span>
               <span v-if="name === 'criticalHit'" class="leading-4 mr-[-3px]">%</span>
             </div>
           </div>
@@ -51,6 +42,11 @@ const props = defineProps({
     default: false,
   },
 })
+
+const getHealthPercentage = () => {
+  if (!state.player.skills.health) return 0
+  return Math.round((state.player.currentHealth / state.player.skills.health) * 100)
+}
 
 const getClassBuff = (statName) => {
   if (!state.player.classType) return null

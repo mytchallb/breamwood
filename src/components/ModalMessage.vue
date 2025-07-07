@@ -20,5 +20,9 @@ const props = defineProps({
 
 function close() {
   store.infoMessage = null
+  if (store.infoMessageCallback) {
+    store.infoMessageCallback()
+    store.infoMessageCallback = null
+  }
 }
 </script>
