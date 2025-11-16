@@ -49,8 +49,8 @@
             <!-- Action buttons -->
             <div class="flex gap-2 w-full justify-around">
               <Button text="Attack" :highlight="true" @click="fight" :disabled="buttonsDisabled" />
-              <Button text="Defend" @click="defend" :disabled="buttonsDisabled" />
-              <Button text="Run" @click="run" :disabled="buttonsDisabled" />
+              <Button text="Items" @click="openItems" :disabled="buttonsDisabled" />
+              <Button text="Forfeit" @click="run" :disabled="buttonsDisabled" />
             </div>
           </div>
         </div>
@@ -182,8 +182,8 @@ const run = () => {
   })
 }
 
-const defend = () => {
-  console.log("Defending...")
+const openItems = () => {
+  console.log("Opening items...")
 }
 
 // Initialize component

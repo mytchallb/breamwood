@@ -42,12 +42,12 @@ const menuItems = ref([
   {
     name: "",
     image: "../assets/apple.png",
-    items: ["Mute", "Quit"],
+    items: ["About", "Fullscreen", "Preferences"],
     dropdownOpen: false,
   },
   {
     name: "BreamWood",
-    items: ["Save", "Mute", "Quit"],
+    items: ["Save", "Load", "Mute", "Quit"],
     dropdownOpen: false,
   },
   {
@@ -87,6 +87,10 @@ function handleMenuAction(item) {
 
   if (item === "Credits") {
     showModalMessage("Made by Mytchall Bransgrove in 2025. See the open-source code at github.com.")
+  }
+
+  if (item === "Fullscreen") {
+    document.documentElement.requestFullscreen()
   }
 
   console.log(`Menu action: ${item}`)

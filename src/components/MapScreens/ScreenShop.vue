@@ -45,6 +45,11 @@
                 <p class="tall:block hidden leading-4 min-h-[54px]">{{ selectedItem?.description }}</p>
               </div>
               <div class="flex flex-col justify-around items-center flex-1">
+                <!-- On sell screen with no itmes -->
+                <div v-if="tradeMode === 'sell' && !inventory.length" class="leading-4 text-center px-3">
+                  <span>You have no items to sell.</span>
+                </div>
+
                 <div class="grid grid-cols-[auto_auto] gap-1 my-2 leading-4 min-w-[100px] w-full">
                   <template v-for="(value, key) in itemStats" :key="key">
                     <div class="flex justify-between p-1 bevel-border bg-[#bcbcbc] col-span-2">
@@ -54,7 +59,7 @@
                   </template>
                 </div>
 
-                <div class="text-xl flex justify-between mb-2 text-center text-yellow">
+                <div v-if="selectedItem" class="text-xl flex justify-between mb-2 text-center text-yellow">
                   <img src="@/assets/goldPile.png" class="w-12 h-6 object-contain" />
                   <span class="min-w-[50px]">{{ tradeMode === "buy" ? selectedItem?.price : (selectedItem?.resale ?? 0) }}</span>
                   <span class="text-left">GOLD</span>

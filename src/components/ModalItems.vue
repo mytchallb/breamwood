@@ -51,12 +51,12 @@
       <div class="flex justify-between p-4">
         <div class="flex gap-2">
           <template v-if="activeTab === 'Items'">
-            <Button text="Drop" :onClick="dropItem" :disabled="!store.selectedInventoryItem || activeTab !== 'Items'" />
             <Button text="Use" :onClick="useItem" :disabled="!store.selectedInventoryItem || activeTab !== 'Items'" />
+            <Button text="Drop" :onClick="dropItem" :disabled="!store.selectedInventoryItem || activeTab !== 'Items'" />
           </template>
           <template v-else>
             <Button
-              :text="store.player.equippedWeapon === store.selectedInventoryItem ? 'Unequip' : 'Equip'"
+              :text="store.player.equippedWeapon && store.player.equippedWeapon === store.selectedInventoryItem ? 'Unequip' : 'Equip'"
               :onClick="toggleEquip"
               :disabled="!store.selectedInventoryItem"
             />
